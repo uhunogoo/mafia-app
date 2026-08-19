@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 import { Suspense } from "react";
+import Game from "@/components/game";
 
 async function UserDetails() {
   const supabase = await createClient();
@@ -13,10 +13,10 @@ async function UserDetails() {
     redirect("/auth/login");
   }
 
-  return JSON.stringify(data.claims, null, 2);
+  return null;
 }
 
-export default function ProtectedPage() {
+async function ProtectedPage() {
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
       <div className="w-full">
@@ -31,13 +31,12 @@ export default function ProtectedPage() {
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           <Suspense>
             <UserDetails />
+            <Game />
           </Suspense>
         </pre>
-      </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
       </div>
     </div>
   );
 }
+
+export default ProtectedPage;
