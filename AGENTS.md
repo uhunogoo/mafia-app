@@ -9,7 +9,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 <!-- END:nextjs-agent-rules -->
 
 ## Tech Stack
-TypeScript, Next.js 16 (App Router), React 19, Zustand, Tailwind CSS v4, @colyseus/react.
+TypeScript, Next.js 16 (App Router), React 19, Zustand, Zod, Tailwind CSS v4, @colyseus/react.
 
 ## Commands
 - Install: `npm install`
@@ -21,10 +21,14 @@ TypeScript, Next.js 16 (App Router), React 19, Zustand, Tailwind CSS v4, @colyse
 ## Architecture
 - Server Components by default. `'use client'` only for
   interactivity (canvas, local state).
+- All DB queries — only via Route Handlers or Server Actions.
+- Client components NEVER access Supabase directly.
 - Structure: `src/components` (UI), `src/lib` (supabase clients, utils),
   `src/app` (routes).
 
 ## Boundaries
+Always:
+- Validate input data with Zod at the Server Action / Route Handler boundary.
 Ask first:
 - Before adding new dependencies.
 
