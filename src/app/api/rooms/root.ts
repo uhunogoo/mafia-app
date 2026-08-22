@@ -10,7 +10,7 @@ export async function createRoom() {
   const { data, error } = await supabase.auth.getClaims();
 
   if (error || !data?.claims) {
-    redirect('/auth/login');
+    redirect('/login');
   }
 
   const res = await fetch(`${COLYSEUS_URL}/rooms`, {
@@ -39,7 +39,7 @@ export async function createRoom() {
 //   const { data, error } = await supabase.auth.getClaims();
 
 //   if (error || !data?.claims) {
-//     redirect('/auth/login');
+//     redirect('/login');
 //   }
 
 //   const userId = data.claims.sub;

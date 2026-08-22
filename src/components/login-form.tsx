@@ -1,8 +1,14 @@
 "use client";
 
+import React from "react";
+import Form from "next/form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { loginAction } from "@/app/(auth)/actions";
+import { AuthActionResult } from "@/lib/types/auth";
 import {
   Card,
   CardContent,
@@ -12,40 +18,33 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+const initialState: AuthActionResult = {
+  success: false,
+  message: undefined,
+  errors: undefined,
+};
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
+  const [state, formAction, isPending] = React.useActionState(
+    async (prevState: AuthActionResult, formData: FormData) => {
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
+      return loginAction({ email, password });
+    },
+    initialState
+  );
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
-      router.push("/protected");
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+  React.useEffect(() => {
+    if (state.success) {
+      router.push("/dashboard");
     }
-  };
+  }, [state.success, router]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -57,24 +56,26 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin}>
+          <Form action={formAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
+                {state.errors?.email && (
+                  <p className="text-xs text-red-500">{state.errors.email.join(", ")}</p>
+                )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    href="/auth/forgot-password"
+                    href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
@@ -82,27 +83,28 @@ export function LoginForm({
                 </div>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
+                {state.errors?.password && (
+                  <p className="text-xs text-red-500">{state.errors.password.join(", ")}</p>
+                )}
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
+              {state.message && (
+                <p className="text-sm text-red-500">{state.message}</p>
+              )}
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Logging in..." : "Login"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="underline underline-offset-4"
-              >
+              <Link href="/sign-up" className="underline underline-offset-4">
                 Sign up
               </Link>
             </div>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

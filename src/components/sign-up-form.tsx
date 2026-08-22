@@ -1,8 +1,14 @@
 "use client";
 
+import React from "react";
+import Form from "next/form";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { signupAction } from "@/app/(auth)/actions";
+import { AuthActionResult } from "@/lib/types/auth";
 import {
   Card,
   CardContent,
@@ -12,49 +18,37 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+const initialState: AuthActionResult = {
+  success: false,
+  message: undefined,
+  errors: undefined,
+};
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const supabase = createClient();
-    setIsLoading(true);
-    setError(null);
+  const [state, formAction, isPending] = React.useActionState(
+    async (prevState: AuthActionResult, formData: FormData) => {
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
+      // Зверніть увагу: name має співпадати з ключем у signupSchema (repeatPassword)
+      const repeatPassword = formData.get("repeatPassword") as string;
 
-    if (password !== repeatPassword) {
-      setError("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
+      return signupAction({ email, password, repeatPassword }, origin);
+    },
+    initialState
+  );
 
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
-        },
-      });
-      if (error) throw error;
-      router.push("/auth/sign-up-success");
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+  React.useEffect(() => {
+    if (state.success) {
+      router.push("/sign-up-success");
     }
-  };
+  }, [state.success, router]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -64,55 +58,60 @@ export function SignUpForm({
           <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignUp}>
+          <Form action={formAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
+                {state.errors?.email && (
+                  <p className="text-xs text-red-500">{state.errors.email.join(", ")}</p>
+                )}
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
+                {state.errors?.password && (
+                  <p className="text-xs text-red-500">{state.errors.password.join(", ")}</p>
+                )}
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="repeat-password">Repeat Password</Label>
-                </div>
+                {/* Змінено id та name для коректної роботи FormData та валідації */}
+                <Label htmlFor="repeatPassword">Repeat Password</Label>
                 <Input
-                  id="repeat-password"
+                  id="repeatPassword"
+                  name="repeatPassword"
                   type="password"
                   required
-                  value={repeatPassword}
-                  onChange={(e) => setRepeatPassword(e.target.value)}
                 />
+                {state.errors?.repeatPassword && (
+                  <p className="text-xs text-red-500">{state.errors.repeatPassword.join(", ")}</p>
+                )}
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating an account..." : "Sign up"}
+              {state.message && (
+                <p className="text-sm text-red-500">{state.message}</p>
+              )}
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Creating an account..." : "Sign up"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link href="/auth/login" className="underline underline-offset-4">
+              <Link href="/login" className="underline underline-offset-4">
                 Login
               </Link>
             </div>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
