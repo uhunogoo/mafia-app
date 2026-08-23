@@ -1,9 +1,4 @@
-/**
- * Guest identity — persisted in localStorage so that the same browser
- * always rejoins with the same name and guestId.
- *
- * One identity per room: key = `guest:<roomId>`.
- */
+import { generateToken } from '@/lib/generateToken';
 
 export interface GuestIdentity {
   guestId: string;
@@ -30,7 +25,7 @@ export function saveGuest(roomId: string, identity: GuestIdentity): void {
 
 export function createGuest(roomId: string, name: string): GuestIdentity {
   const identity: GuestIdentity = {
-    guestId: crypto.randomUUID(),
+    guestId: generateToken(),
     name: name.trim(),
   };
   saveGuest(roomId, identity);

@@ -18,7 +18,7 @@ export default function JoinForm({ roomId, onJoined }: JoinFormProps) {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
-  const handleJoin = (e: React.FormEvent) => {
+  const handleJoin = (e: React.SubmitEvent) => {
     e.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) {

@@ -24,7 +24,7 @@ export default function RoomLobby({ roomId, token }: RoomLobbyProps) {
   const [inviteUrl, setInviteUrl] = useState('');
 
   useEffect(() => {
-    setInviteUrl(`${window.location.origin}/room/${roomId}?token=${token}`);
+    setInviteUrl(`${window.location.origin}/room/${roomId}#token=${token}`);
   }, [roomId, token]);
 
   // Load the guest identity that was persisted when the user filled in their nickname.
