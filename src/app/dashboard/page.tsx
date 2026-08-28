@@ -1,7 +1,5 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-// import { createRoom } from '@/app/api/rooms/root';
-// import { Button } from '@/components/ui/button';
 import CreateGame from '@/components/create-game';
 
 async function requireUser() {
@@ -10,8 +8,6 @@ async function requireUser() {
   if (error || !data?.claims) redirect('/login');
   return data.claims;
 }
-
-export const instant = false
 
 export default async function DashboardPage() {
   const user = await requireUser();
