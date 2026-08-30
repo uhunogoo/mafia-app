@@ -5,40 +5,34 @@ import { useRoom } from '@colyseus/react';
 import { client } from '@/lib/colyseus/client';
 import InviteLink from '@/components/invite-link';
 import PlayerList from '@/components/player-list';
-import type { Guest } from '@/components/join-gate';
-import StatusMessage from '@/components/ui/status-message';
+import { StatusMessage } from '@/components/ui/status-message';
+import type { GuestIdentity } from '@/lib/guest';
 
 interface RoomLobbyProps {
   roomId: string;
   token: string;
-  guest: Guest;
+  guest: GuestIdentity;
 }
 
 export default function RoomLobby({ roomId, token, guest }: RoomLobbyProps) {
-  const connectToRoom = useCallback(() => {
-    return client.joinById(roomId, {
-      name: guest.name ?? 'Guest',
-      guestId: guest.guestId,
-      token,
-    });
-  }, [roomId, token, guest.name, guest.guestId]);
+  const connectToRoom = useCallback(
+    () =>
+      client.joinById(roomId, {
+        name: guest.name,
+        guestId: guest.guestId,
+        token,
+      }),
+    [roomId, token, guest.name, guest.guestId],
+  );
 
   const { room, error, isConnecting } = useRoom(connectToRoom);
 
   if (isConnecting) {
-    return (
-      <StatusMessage>
-        Connecting to room…
-      </StatusMessage>
-    );
+    return <StatusMessage variant="loading">Connecting to room…</StatusMessage>;
   }
 
   if (error) {
-    return (
-      <StatusMessage isError>
-        Error: {error.message}
-      </StatusMessage>
-    );
+    return <StatusMessage variant="error">Error: {error.message}</StatusMessage>;
   }
 
   if (!room) return null;

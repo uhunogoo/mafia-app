@@ -92,7 +92,7 @@ export function LoginForm({
                 )}
               </div>
               {state.message && (
-                <p className="text-sm text-red-500">{state.message}</p>
+                <p className="text-sm text-destructive">{state.message}</p>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending ? "Logging in..." : "Login"}

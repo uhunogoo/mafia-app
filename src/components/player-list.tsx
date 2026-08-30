@@ -2,10 +2,10 @@
 
 import { useMemo } from 'react';
 import { useRoomState } from '@colyseus/react';
+import type { Room } from '@colyseus/sdk';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UsersIcon } from 'lucide-react';
 
-// Заміни Type на `any`, якщо ти не маєш типізації схеми, або імпортуй свій Room type
 interface Player {
   sessionId: string;
   name: string;
@@ -13,17 +13,16 @@ interface Player {
 }
 
 interface PlayerListProps {
-  room: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  room: Room<any>;
 }
 
 export default function PlayerList({ room }: PlayerListProps) {
-  // Підписуємося виключно на об'єкт гравців
   const playersMap = useRoomState(
     room,
     (state) => state?.players as Record<string, Player> | undefined
   );
 
-  // Кешуємо масив, щоб не робити Object.values на кожному мікро-рендері кімнати
   const playerList = useMemo(() => {
     return playersMap ? Object.values(playersMap) : [];
   }, [playersMap]);

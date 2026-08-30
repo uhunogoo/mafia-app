@@ -1,43 +1,43 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { loadGuest } from '@/lib/guest';
+import { useEffect, useState } from 'react';
+import { loadGuest, type GuestIdentity } from '@/lib/guest';
 import JoinForm from '@/components/form/join-form';
-import RoomLobby from '@/components/room-lobby'; // Або шлях до нового файлу
-import StatusMessage from '@/components/ui/status-message';
+import RoomLobby from '@/components/room-lobby';
+import { StatusMessage } from '@/components/ui/status-message';
 
 interface JoinGateProps {
   roomId: string;
 }
 
-export interface Guest {
-  name: string;
-  guestId?: string;
-}
-
-export default function JoinGate({ roomId }: JoinGateProps) {
-  const [isReady, setIsReady] = useState(false);
+function useRoomToken(roomId: string): { token: string | null; isReady: boolean } {
   const [token, setToken] = useState<string | null>(null);
-  const [guest, setGuest] = useState<Guest | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (!roomId) return;
-
-    const hashString = window.location.hash.slice(1);
-    const params = new URLSearchParams(hashString);
-    const extractedToken = sessionStorage.getItem(`room_${roomId}_token`);
-
-    setToken(params.get('token') || extractedToken);
-    setGuest(loadGuest(roomId));
-
+    const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
+    const fromSession = sessionStorage.getItem(`room_${roomId}_token`);
+    setToken(fromHash ?? fromSession);
     setIsReady(true);
   }, [roomId]);
 
-  if (!isReady) return null; // Уникаємо Hydration Error
+  return { token, isReady };
+}
+
+export default function JoinGate({ roomId }: JoinGateProps) {
+  const { token, isReady } = useRoomToken(roomId);
+  const [guest, setGuest] = useState<GuestIdentity | null>(null);
+
+  useEffect(() => {
+    if (isReady) setGuest(loadGuest(roomId));
+  }, [isReady, roomId]);
+
+  // Avoid hydration mismatch — all state reads happen client-side only
+  if (!isReady) return null;
 
   if (!token) {
     return (
-      <StatusMessage isError>
+      <StatusMessage variant="error">
         Invalid or missing invite link. Please ask the host to share a valid invite URL.
       </StatusMessage>
     );
@@ -47,8 +47,7 @@ export default function JoinGate({ roomId }: JoinGateProps) {
     return (
       <JoinForm
         roomId={roomId}
-        token={token}
-        onJoined={() => setGuest(loadGuest(roomId))}
+        onJoined={(identity) => setGuest(identity)}
       />
     );
   }

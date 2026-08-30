@@ -86,7 +86,6 @@ export function SignUpForm({
                 )}
               </div>
               <div className="grid gap-2">
-                {/* Змінено id та name для коректної роботи FormData та валідації */}
                 <Label htmlFor="repeatPassword">Repeat Password</Label>
                 <Input
                   id="repeatPassword"
@@ -95,11 +94,11 @@ export function SignUpForm({
                   required
                 />
                 {state.errors?.repeatPassword && (
-                  <p className="text-xs text-red-500">{state.errors.repeatPassword.join(", ")}</p>
+                  <p className="text-xs text-destructive">{state.errors.repeatPassword.join(", ")}</p>
                 )}
               </div>
               {state.message && (
-                <p className="text-sm text-red-500">{state.message}</p>
+                <p className="text-sm text-destructive">{state.message}</p>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending ? "Creating an account..." : "Sign up"}
