@@ -1,41 +1,37 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { loadGuest, type GuestIdentity } from '@/lib/guest';
+import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
 import JoinForm from '@/components/form/join-form';
 import RoomLobby from '@/components/room-lobby';
 import { StatusMessage } from '@/components/ui/status-message';
 
 interface JoinGateProps {
   roomId: string;
+  /** Supabase UID of the authenticated host, resolved server-side. */
+  hostUserId: string;
 }
 
-function useRoomToken(roomId: string): { token: string | null; isReady: boolean } {
-  const [token, setToken] = useState<string | null>(null);
-  const [isReady, setIsReady] = useState(false);
+function useRoomToken(roomId: string): string | null | undefined {
+  const [token, setToken] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
     const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
     const fromSession = sessionStorage.getItem(`room_${roomId}_token`);
-    setToken(fromHash ?? fromSession);
-    setIsReady(true);
+    setToken(fromHash ?? fromSession ?? null);
   }, [roomId]);
 
-  return { token, isReady };
+  return token;
 }
 
-export default function JoinGate({ roomId }: JoinGateProps) {
-  const { token, isReady } = useRoomToken(roomId);
-  const [guest, setGuest] = useState<GuestIdentity | null>(null);
+export default function JoinGate({ roomId, hostUserId }: JoinGateProps) {
+  const token = useRoomToken(roomId);
+  const [identity, setIdentity] = useState<PlayerIdentity | null>(() => loadIdentity(roomId));
 
-  useEffect(() => {
-    if (isReady) setGuest(loadGuest(roomId));
-  }, [isReady, roomId]);
+  // undefined = still reading storage; null = no token found
+  if (token === undefined) return null;
 
-  // Avoid hydration mismatch — all state reads happen client-side only
-  if (!isReady) return null;
-
-  if (!token) {
+  if (token === null) {
     return (
       <StatusMessage variant="error">
         Invalid or missing invite link. Please ask the host to share a valid invite URL.
@@ -43,14 +39,15 @@ export default function JoinGate({ roomId }: JoinGateProps) {
     );
   }
 
-  if (!guest) {
+  if (!identity) {
     return (
       <JoinForm
         roomId={roomId}
-        onJoined={(identity) => setGuest(identity)}
+        hostUserId={hostUserId}
+        onJoined={setIdentity}
       />
     );
   }
 
-  return <RoomLobby roomId={roomId} token={token} guest={guest} />;
+  return <RoomLobby roomId={roomId} token={token} identity={identity} />;
 }

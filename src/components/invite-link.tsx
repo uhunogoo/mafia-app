@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckIcon, ClipboardIcon } from 'lucide-react';
@@ -10,14 +10,10 @@ interface InviteLinkProps {
   token: string;
 }
 
-const InviteLink = memo(function InviteLink({ roomId, token }: InviteLinkProps) {
+export default function InviteLink({ roomId, token }: InviteLinkProps) {
   const [copied, setCopied] = useState(false);
 
-  // Оскільки JoinGate блокує рендер на сервері (!isReady), window тут точно доступний
-  const inviteUrl = useMemo(
-    () => `${window.location.origin}/room/${roomId}#token=${token}`,
-    [roomId, token]
-  );
+  const inviteUrl = `${window.location.origin}/room/${roomId}#token=${token}`;
 
   const copyInviteLink = useCallback(async () => {
     await navigator.clipboard.writeText(inviteUrl);
@@ -47,6 +43,4 @@ const InviteLink = memo(function InviteLink({ roomId, token }: InviteLinkProps) 
       </CardContent>
     </Card>
   );
-});
-
-export default InviteLink;
+}

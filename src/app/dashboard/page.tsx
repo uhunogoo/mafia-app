@@ -11,7 +11,7 @@ async function requireUser() {
 
 export default async function DashboardPage() {
   const user = await requireUser();
-  console.log(user)
+
   return (
     <div className="flex-1 w-full flex flex-col gap-8">
       <div>
@@ -26,7 +26,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-muted-foreground">
           Create a new room and share the invite link with other players.
         </p>
-        <CreateGame>
+        <CreateGame user={user}>
           Create Room
         </CreateGame>
       </div>

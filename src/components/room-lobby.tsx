@@ -6,23 +6,23 @@ import { client } from '@/lib/colyseus/client';
 import InviteLink from '@/components/invite-link';
 import PlayerList from '@/components/player-list';
 import { StatusMessage } from '@/components/ui/status-message';
-import type { GuestIdentity } from '@/lib/guest';
+import type { PlayerIdentity } from '@/lib/identity';
 
 interface RoomLobbyProps {
   roomId: string;
   token: string;
-  guest: GuestIdentity;
+  identity: PlayerIdentity;
 }
 
-export default function RoomLobby({ roomId, token, guest }: RoomLobbyProps) {
+export default function RoomLobby({ roomId, token, identity }: RoomLobbyProps) {
   const connectToRoom = useCallback(
     () =>
       client.joinById(roomId, {
-        name: guest.name,
-        guestId: guest.guestId,
+        name: identity.name,
         token,
+        guestId: identity.hostUserId || identity.guestId,
       }),
-    [roomId, token, guest.name, guest.guestId],
+    [roomId, token, identity],
   );
 
   const { room, error, isConnecting } = useRoom(connectToRoom);

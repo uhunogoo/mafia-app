@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
 import { useRoomState } from '@colyseus/react';
 import type { Room } from '@colyseus/sdk';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,9 +22,7 @@ export default function PlayerList({ room }: PlayerListProps) {
     (state) => state?.players as Record<string, Player> | undefined
   );
 
-  const playerList = useMemo(() => {
-    return playersMap ? Object.values(playersMap) : [];
-  }, [playersMap]);
+  const playerList = playersMap ? Object.values(playersMap) : [];
 
   return (
     <Card>

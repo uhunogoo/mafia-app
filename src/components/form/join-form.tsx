@@ -1,7 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { createGuest, type GuestIdentity } from '@/lib/guest';
+import {
+  createGuestIdentity,
+  createHostIdentity,
+  type PlayerIdentity,
+} from '@/lib/identity';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,22 +13,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface JoinFormProps {
   roomId: string;
-  /** Called with the new guest identity after it has been saved. */
-  onJoined: (identity: GuestIdentity) => void;
+  /** Supabase Auth UID — present only for the authenticated host. */
+  hostUserId?: string;
+  /** Called with the resolved identity after the form is submitted. */
+  onJoined: (identity: PlayerIdentity) => void;
 }
 
-export default function JoinForm({ roomId, onJoined }: JoinFormProps) {
+export default function JoinForm({ roomId, hostUserId, onJoined }: JoinFormProps) {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) {
       setError('Please enter a nickname.');
       return;
     }
-    onJoined(createGuest(roomId, trimmed));
+    const identity = hostUserId
+      ? createHostIdentity(roomId, trimmed, hostUserId)
+      : createGuestIdentity(roomId, trimmed);
+    onJoined(identity);
   };
 
   return (
