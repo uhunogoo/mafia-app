@@ -5,7 +5,7 @@ import JoinGate from '@/components/join-gate';
 async function requireUser() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) return {};
+  if (error || !data?.claims) redirect('/login');
   return data.claims;
 }
 
