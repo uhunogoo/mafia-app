@@ -15,7 +15,7 @@ export function StatusMessage({
   className,
 }: StatusMessageProps) {
   return (
-    <div className={cn('flex items-center justify-center min-h-[200px]', className)}>
+    <div className={cn('flex items-center justify-center min-h-50', className)}>
       <p
         className={cn(
           variant === 'error' && 'text-destructive font-medium',
