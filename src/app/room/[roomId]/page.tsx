@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import JoinGate from '@/components/join-gate';
+import JoinForm from '@/components/form/join-form';
+import RoomLobby from '@/components/room-lobby';
 
 async function requireUser() {
   const supabase = await createClient();
@@ -15,7 +16,7 @@ export default async function RoomPage({
   params: Promise<{ roomId: string }>;
 }) {
   const { roomId } = await params;
-  const user = await requireUser();
+  await requireUser();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-8">
@@ -23,7 +24,8 @@ export default async function RoomPage({
         <h1 className="font-bold text-3xl mb-1">Room</h1>
         <p className="text-muted-foreground text-sm font-mono">{roomId}</p>
       </div>
-      <JoinGate roomId={roomId} hostUserId={user.sub} />
+      <JoinForm />
+      <RoomLobby />
     </div>
   );
 }

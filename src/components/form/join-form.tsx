@@ -1,27 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  createGuestIdentity,
-  createHostIdentity,
-  type PlayerIdentity,
-} from '@/lib/identity';
+import { useContext, useState } from 'react';
+import { createGuestIdentity } from '@/lib/identity';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageContext } from '@/components/providers/page-provider';
 
-interface JoinFormProps {
-  roomId: string;
-  /** Supabase Auth UID — present only for the authenticated host. */
-  hostUserId?: string;
-  /** Called with the resolved identity after the form is submitted. */
-  onJoined: (identity: PlayerIdentity) => void;
-}
-
-export default function JoinForm({ roomId, hostUserId, onJoined }: JoinFormProps) {
+export default function JoinForm() {
+  const { roomId, token, identity, setIdentity } = useContext(PageContext)!;
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+
+  if (token === undefined || token === null || identity) return null;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,10 +22,8 @@ export default function JoinForm({ roomId, hostUserId, onJoined }: JoinFormProps
       setError('Please enter a nickname.');
       return;
     }
-    const identity = hostUserId
-      ? createHostIdentity(roomId, trimmed, hostUserId)
-      : createGuestIdentity(roomId, trimmed);
-    onJoined(identity);
+    const identity = createGuestIdentity(roomId, trimmed);
+    setIdentity(identity);
   };
 
   return (
