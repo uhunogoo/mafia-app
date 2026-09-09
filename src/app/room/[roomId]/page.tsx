@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import JoinForm from '@/components/form/join-form';
-import RoomLobby from '@/components/room-lobby';
+import RoomLobby from '@/components/room/room-lobby';
 
 async function requireUser() {
   const supabase = await createClient();

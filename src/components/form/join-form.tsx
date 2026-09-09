@@ -15,7 +15,7 @@ export default function JoinForm() {
 
   if (token === undefined || token === null || identity) return null;
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) {

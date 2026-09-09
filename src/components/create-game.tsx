@@ -9,10 +9,9 @@ import { generateToken } from '@/lib/generateToken';
 
 interface CreateGameProps {
   user: JwtPayload;
-  children?: React.ReactNode;
 }
 
-export default function CreateGame({ user, children }: CreateGameProps) {
+export default function CreateGame({ user }: CreateGameProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +37,7 @@ export default function CreateGame({ user, children }: CreateGameProps) {
     <>
       {error && <p className="text-sm text-destructive">{error}</p>}
       <Button size="lg" className="w-full" onClick={handleCreate} disabled={isLoading}>
-        {isLoading ? 'Creating…' : (children ?? 'Create Room')}
+        {isLoading ? 'Creating…' : 'Створити кімнату'}
       </Button>
     </>
   );

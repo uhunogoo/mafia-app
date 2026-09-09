@@ -26,9 +26,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-muted-foreground">
           Create a new room and share the invite link with other players.
         </p>
-        <CreateGame user={user}>
-          Create Room
-        </CreateGame>
+        <CreateGame user={user} />
       </div>
     </div>
   );
