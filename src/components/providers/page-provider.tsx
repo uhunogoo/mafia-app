@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
+import { useParams } from 'next/navigation';
 
 interface PageContextValue {
   roomId: string;
@@ -12,7 +13,8 @@ interface PageContextValue {
 
 export const PageContext = React.createContext<PageContextValue | null>(null);
 
-function PageProvider({ children, roomId }: { children?: React.ReactNode; roomId: string }) {
+function PageProvider({ children }: { children?: React.ReactNode; }) {
+  const { roomId } = useParams<{ roomId: string }>();
   const [token, setToken] = React.useState<string | null | undefined>(undefined);
   const [identity, setIdentity] = React.useState<PlayerIdentity | null>(() => loadIdentity(roomId));
 

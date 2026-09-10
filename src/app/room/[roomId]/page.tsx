@@ -19,13 +19,24 @@ export default async function RoomPage({
   await requireUser();
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-8">
-      <div>
+    <>
+      {/* Top line */}
+      <div className="flex flex-row">
         <h1 className="font-bold text-3xl mb-1">Room</h1>
         <p className="text-muted-foreground text-sm font-mono">{roomId}</p>
       </div>
+      {/* Body */}
+      <div className="flex-row gap-8">
+        <div className="flex-1">
+          <RoomLobby />
+        </div>
+        <aside className="w-80">
+          sidebar
+        </aside>
+      </div>
+
+      {/* show for new player */}
       <JoinForm />
-      <RoomLobby />
-    </div>
+    </>
   );
 }
