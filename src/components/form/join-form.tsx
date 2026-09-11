@@ -9,11 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageContext } from '@/components/providers/page-provider';
 
 export default function JoinForm() {
-  const { roomId, token, identity, setIdentity } = useContext(PageContext)!;
+  const { roomId, identity, setIdentity } = useContext(PageContext)!;
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
-  if (token === undefined || token === null || identity) return null;
+  if (identity) return null;
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,12 +22,12 @@ export default function JoinForm() {
       setError('Please enter a nickname.');
       return;
     }
-    const identity = createGuestIdentity(roomId, trimmed);
-    setIdentity(identity);
+    const newIdentity = createGuestIdentity(roomId, trimmed);
+    setIdentity(newIdentity);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Join the game</CardTitle>

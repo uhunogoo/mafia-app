@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import JoinForm from '@/components/form/join-form';
 import RoomLobby from '@/components/room/room-lobby';
+import RoomGuard from '@/components/room/room-guard';
 
 async function requireUser() {
   const supabase = await createClient();
@@ -19,24 +20,23 @@ export default async function RoomPage({
   await requireUser();
 
   return (
-    <>
-      {/* Top line */}
-      <div className="flex flex-row">
-        <h1 className="font-bold text-3xl mb-1">Room</h1>
-        <p className="text-muted-foreground text-sm font-mono">{roomId}</p>
-      </div>
-      {/* Body */}
-      <div className="flex-row gap-8">
-        <div className="flex-1">
-          <RoomLobby />
+    <RoomGuard>
+      <div className="room-layout-grid">
+        <div className="col-span-2">
+          <h1 className="font-bold text-3xl mb-1">Room</h1>
+          <p className="text-muted-foreground text-sm font-mono">{roomId}</p>
         </div>
+
+        {/* Body */}
+        <RoomLobby />
+
         <aside className="w-80">
           sidebar
         </aside>
-      </div>
 
-      {/* show for new player */}
-      <JoinForm />
-    </>
+        {/* show for new player */}
+        <JoinForm />
+      </div>
+    </RoomGuard>
   );
 }

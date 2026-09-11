@@ -16,11 +16,14 @@ export const PageContext = React.createContext<PageContextValue | null>(null);
 function PageProvider({ children }: { children?: React.ReactNode; }) {
   const { roomId } = useParams<{ roomId: string }>();
   const [token, setToken] = React.useState<string | null | undefined>(undefined);
-  const [identity, setIdentity] = React.useState<PlayerIdentity | null>(() => loadIdentity(roomId));
+  const [identity, setIdentity] = React.useState<PlayerIdentity | null>(null);
 
   React.useEffect(() => {
     const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
     const fromSession = sessionStorage.getItem(`room_${roomId}_token`);
+    const identity = loadIdentity(roomId);
+
+    setIdentity(identity);
     setToken(fromHash ?? fromSession ?? null);
   }, [roomId]);
 

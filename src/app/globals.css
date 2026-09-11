@@ -118,6 +118,12 @@
   }
 }
 
+@layer components {
+    .room-layout-grid {
+        @apply grid grid-rows-[auto_1fr] grid-cols-[1fr_--spacing(80)];
+    }
+}
+
 @layer base {
   * {
     @apply border-border;

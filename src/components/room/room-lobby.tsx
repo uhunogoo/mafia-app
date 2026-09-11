@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useRoom } from '@colyseus/react';
 import { client } from '@/lib/colyseus/client';
 import InviteLink from '@/components/invite-link';
@@ -10,20 +10,33 @@ import { PageContext } from '@/components/providers/page-provider';
 
 export default function RoomLobby() {
   const { roomId, token, identity } = useContext(PageContext)!;
+  const [hasJoined, setHasJoined] = useState(false);
 
+  // Connect as spectator
   const connectToRoom = useCallback(
     () =>
       client.joinById(roomId, {
-        name: identity!.name,
         token,
-        guestId: identity!.hostUserId || identity!.guestId,
+        guestId: `temp-${Math.random()}`,
+        spectator: true,
       }),
-    [roomId, token, identity],
+    [roomId, token],
   );
 
   const { room, error, isConnecting } = useRoom(connectToRoom);
 
-  if (!token || !identity) return null;
+  //When identity connect as player
+  useEffect(() => {
+    if (!room || !identity?.name || hasJoined) return;
+
+    room.send('joinAsPlayer', {
+      name: identity.name,
+      guestId: identity.guestId,
+    });
+    setHasJoined(true);
+  }, [room, identity, hasJoined]);
+
+  if (!token) return null;
 
   if (isConnecting) {
     return <StatusMessage variant="loading">Connecting to room…</StatusMessage>;
@@ -36,9 +49,11 @@ export default function RoomLobby() {
   if (!room) return null;
 
   return (
-    <div className="flex flex-col gap-6 max-w-lg">
-      <InviteLink roomId={roomId} token={token} />
-      <PlayerList room={room} />
-    </div>
+    <>
+      <div className="flex flex-col gap-6 max-w-lg">
+        <InviteLink roomId={roomId} token={token} />
+        <PlayerList room={room} />
+      </div>
+    </>
   );
 }
