@@ -22,7 +22,10 @@ export default function JoinForm() {
       setError('Please enter a nickname.');
       return;
     }
-    const newIdentity = createGuestIdentity(roomId, trimmed);
+    // Хост кімнати приєднується тим самим guestId, з яким створив кімнату
+    // (claim живе у sessionStorage вкладки, де кімнату створили)
+    const hostClaim = sessionStorage.getItem(`room_${roomId}_hostClaim`);
+    const newIdentity = createGuestIdentity(roomId, trimmed, hostClaim ?? undefined);
     setIdentity(newIdentity);
   };
 

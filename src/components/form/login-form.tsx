@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { loginAction } from "@/app/(auth)/actions";
+import { loginAction } from "@/app/(main)/(auth)/actions";
 import { AuthActionResult } from "@/lib/types/auth";
 import {
   Card,

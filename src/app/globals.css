@@ -119,8 +119,8 @@
 }
 
 @layer components {
-    .room-layout-grid {
-        @apply grid grid-rows-[auto_1fr] grid-cols-[1fr_--spacing(80)];
+    .room-body-grid {
+        @apply grid gap-4 lg:grid-cols-[1fr_20rem];
     }
 }
 

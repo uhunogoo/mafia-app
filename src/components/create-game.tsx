@@ -22,8 +22,12 @@ export default function CreateGame({ user }: CreateGameProps) {
 
     try {
       const token = generateToken();
-      const room = await client.create('mafia_room', { token, hostUserId: user.sub });
+      // Сервер очікує guestId творця кімнати — саме він стає хостом (state.hostId).
+      // sessionStorage: claim діє лише у вкладці, де кімнату створили,
+      // щоб гість з іншої вкладки не перехопив host-ідентичність.
+      const room = await client.create('mafia_room', { token, guestId: user.sub });
       sessionStorage.setItem(`room_${room.roomId}_token`, token);
+      sessionStorage.setItem(`room_${room.roomId}_hostClaim`, user.sub);
       router.push(`/room/${room.roomId}#token=${token}`);
     } catch (err: unknown) {
       console.error('Failed to create room:', err);

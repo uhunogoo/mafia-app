@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import AppNav from "@/components/app-nav";
-import { AppLayout } from "@/components/app-layout";
-import AppFooter from "@/components/app-footer";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -36,12 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppNav />
-          <AppLayout className={`${geistSans.className} antialiased`}>
-            {children}
-          </AppLayout>
-
-          <AppFooter />
+          {children}
         </ThemeProvider>
       </body>
     </html>

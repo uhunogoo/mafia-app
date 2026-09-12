@@ -30,8 +30,15 @@ function saveIdentity(roomId: string, identity: PlayerIdentity): void {
   localStorage.setItem(storageKey(roomId), JSON.stringify(identity));
 }
 
-export function createGuestIdentity(roomId: string, name: string): PlayerIdentity {
-  const identity: PlayerIdentity = { name: name.trim(), guestId: generateToken() };
+export function createGuestIdentity(
+  roomId: string,
+  name: string,
+  presetGuestId?: string,
+): PlayerIdentity {
+  const identity: PlayerIdentity = {
+    name: name.trim(),
+    guestId: presetGuestId ?? generateToken(),
+  };
   saveIdentity(roomId, identity);
   return identity;
 }
