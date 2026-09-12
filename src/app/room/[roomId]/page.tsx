@@ -5,13 +5,9 @@ import RoomTopBar from '@/components/room/room-top-bar';
 import RulesCard from '@/components/room/rules-card';
 import { RoomConnectionProvider } from '@/components/room/room-context';
 
-export default async function RoomPage({
-  params,
-}: {
-  params: Promise<{ roomId: string }>;
-}) {
-  await params;
-
+// roomId читається лише на клієнті (useParams у PageProvider) —
+// сторінка повністю статична, без доступу до params.
+export default function RoomPage() {
   return (
     <RoomGuard>
       <RoomConnectionProvider>
