@@ -1,109 +1,46 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+## 👥 1. Ролі (Оптимально: 8-10 гравців)
+🔴 **Мирні (Червоні):** Перемагають аналітикою та голосуванням.
+*   ⭐ **Шериф:** Щоночі перевіряє одного гравця на колір (*Червоний / Чорний*). Дон для нього — Чорний.
+*   🏥 **Лікар:** Щоночі рятує одного гравця. *Обмеження:* не може лікувати того самого гравця (включно із собою) дві ночі поспіль.
+*   🕴️ **Мирний житель:** Не має нічних дій. Голосує та аналізує.
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+🔴 **Мафія (Чорні):** Знають одне одного. Перемагають вбивствами та обманом.
+*   🔪 **Мафія:** Щоночі спільно обирають жертву.
+*   🎩 **Дон:** Голова мафії. Щоночі додатково перевіряє одного гравця, чи не є він **Шерифом**.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+---
 
-## Features
+## 🌙 2. Нічна фаза (Суворий порядок)
+Ведучий оголошує: *"Місто засинає"*. Дії виконуються мовчки, на дотик або жести.
+1.  **Мафія:** Прокидається і вказує жертву. *(⚠️ **Перша ніч** — тестова: мафія лише знайомиться, вбивств немає!)*
+2.  **Дон:** Прокидається і перевіряє гравця на Шерифа (Ведучий киває "Так" або хитає "Ні").
+3.  **Шериф:** Прокидається і перевіряє гравця на колір (Ведучий показує "Червоний" або "Чорний").
+4.  **Лікар:** Прокидається і вказує, кого рятує. Якщо збігається з жертвою мафії — вбивство скасовується.
+*Ведучий: "Місто прокидається".*
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Proxy
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+---
 
-## Demo
+## ☀️ 3. Денна фаза (Хронометраж)
+**1. Оголошення:** Ведучий каже, хто помер (або що ніхто не помер). Померлі вибувають і **повністю мовчать** до кінця гри.
+**2. Промови (по 1 хв):** Гравці говорять по черзі. Перебивати заборонено.
+*   *Правило першого слова:* Починаючи з **Дня 2**, перший промовець **зобов'язаний** висунути кандидата на вигнання. Щодня право першого слова зсувається на одного гравця за годинниковою стрілкою.
+*   Інші гравці під час своїх промов можуть додавати нових кандидатів.
+**3. Балаган (1-2 хв):** Вільні суперечки, аргументація, тиск. Формується фінальний список кандидатів на голосування.
+**4. Захист (по 30 сек):** Кожен висунутий кандидат має 30 секунд на останнє слово та виправдання.
+**5. Голосування:** Одночасне (за командою "Раз, два, три"). Голосуємо лише за кандидатів зі списку або утримуємось.
+*   *Нічия:* Якщо лідерів кілька — миттєве переголосування лише між ними.
+*   *Автопомилування:* Якщо під час переголосування знову нічия — **ніхто не виганяється**, день закінчується, настає ніч.
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+---
 
-## Deploy to Vercel
+## 🏆 4. Умови Перемоги
+*   🔴 **Перемога Мирних:** Усі Чорні (Мафія та Дон) вигнані або вбиті.
+*   🔪 **Перемога Мафії:** Кількість живих Чорних **дорівнює або перевищує** кількість живих Червоних (наприклад, 2 мафії проти 2 мирних). Гра зупиняється миттєво, навіть якщо зараз день.
 
-Vercel deployment will guide you through creating a Supabase account and project.
+---
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
-
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
-
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
-
-## Clone and run locally
-
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
-
-2. Create a Next.js app using the Supabase Starter template npx command
-
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
-
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
-
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
-
-3. Use `cd` to change into the app's directory
-
-   ```bash
-   cd with-supabase-app
-   ```
-
-4. Rename `.env.example` to `.env.local` and update the following:
-
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
-
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
-
-5. You can now run the Next.js local development server:
-
-   ```bash
-   npm run dev
-   ```
-
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
-
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
-
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
-
-## Feedback and issues
-
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+## ⚖️ 5. Золоті правила (Етикет та Фоли)
+1.  **Мертві не говорять.** Вибулі гравці не підказують, не емоціонують, не зітхають і не впливають на гру жестами.
+2.  **Без показу ролей.** Заявляти "я Шериф" або "я Мирний" можна (і часто потрібно), але показувати карту, телефон чи будь-який інший доказ — **суворо заборонено** (автоматичний виліт з гри).
+3.  **Таємниця до кінця.** Після смерті або вигнання роль гравця **не розкривається** до завершення всієї партії (щоб не зламати логіку Шерифу чи Дона).
+4.  **Тиша вночі.** Будь-який шепіт, стукіт чи шум під час нічної фази карається ведучим (попередження або фол).

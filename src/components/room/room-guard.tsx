@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, type ReactNode } from 'react';
 
 import JoinForm from '@/components/form/join-form';
 import { PageContext } from '@/components/providers/page-provider';
 
-function RoomGuard({ children }) {
-  const { identity } = useContext(PageContext);
+function RoomGuard({ children }: { children: ReactNode }) {
+  const { identity } = useContext(PageContext)!;
   if (identity) {
     return <>{children}</>; // Просто пускаємо всередину
   }
