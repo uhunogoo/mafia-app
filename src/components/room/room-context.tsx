@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { createRoomContext, type Snapshot } from '@colyseus/react';
 
 import { client } from '@/lib/colyseus/client';
-import { PageContext } from '@/components/providers/page-provider';
+import { usePageContext } from '@/components/providers/page-provider';
 import { StatusMessage } from '@/components/ui/status-message';
 
 /**
- * Клиентське уявлення про MafiaState (mafia-server/src/rooms/schema/MyRoomState.ts).
+ * Клиентське уявлення про MafiaState (mafia-server/src/rooms/schema/MafiaState.ts).
  * MapSchema трансформується у Snapshot у Record за ключем guestId.
  */
 export interface RoomPlayerView {
@@ -30,21 +30,26 @@ export interface MafiaStateView {
 
 export const RoomContext = createRoomContext();
 
-export function useMafiaState<U>(selector: (state: MafiaStateView) => U): Snapshot<U> | undefined {
+export function useMafiaState<U>(
+  selector: (state: MafiaStateView) => U,
+): Snapshot<U> | undefined {
   return RoomContext.useRoomState((state) => selector(state as MafiaStateView));
 }
 
 /** Підключає кімнату лише коли гравець має токен та identity (нікнейм). */
 export function RoomConnectionProvider({ children }: { children?: React.ReactNode }) {
-  const { roomId, token, identity } = useContext(PageContext)!;
+  const { roomId, token, identity } = usePageContext();
 
   const connect = React.useCallback(() => {
+    // Викликається лише коли ready; fallback-и ніколи не використовуються
     return client.joinById(roomId, {
-      token: token!,
-      name: identity!.name,
-      guestId: identity!.guestId!,
+      token: token ?? '',
+      name: identity?.name ?? '',
+      guestId: identity?.guestId ?? '',
     });
   }, [roomId, token, identity]);
+
+  const ready = Boolean(token && identity?.guestId);
 
   if (!token) {
     return (
@@ -53,8 +58,6 @@ export function RoomConnectionProvider({ children }: { children?: React.ReactNod
       </StatusMessage>
     );
   }
-
-  const ready = Boolean(identity?.guestId);
 
   return (
     <RoomContext.RoomProvider

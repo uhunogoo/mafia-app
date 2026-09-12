@@ -4,7 +4,7 @@ import React from 'react';
 import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
 import { useParams } from 'next/navigation';
 
-interface PageContextValue {
+export interface PageContextValue {
   roomId: string;
   token: string | null | undefined;
   identity: PlayerIdentity | null;
@@ -13,7 +13,15 @@ interface PageContextValue {
 
 export const PageContext = React.createContext<PageContextValue | null>(null);
 
-function PageProvider({ children }: { children?: React.ReactNode; }) {
+export function usePageContext(): PageContextValue {
+  const context = React.useContext(PageContext);
+  if (!context) {
+    throw new Error('usePageContext має використовуватись усередині PageProvider');
+  }
+  return context;
+}
+
+function PageProvider({ children }: { children?: React.ReactNode }) {
   const { roomId } = useParams<{ roomId: string }>();
   const [token, setToken] = React.useState<string | null | undefined>(undefined);
   const [identity, setIdentity] = React.useState<PlayerIdentity | null>(null);
@@ -21,9 +29,9 @@ function PageProvider({ children }: { children?: React.ReactNode; }) {
   React.useEffect(() => {
     const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
     const fromSession = sessionStorage.getItem(`room_${roomId}_token`);
-    const identity = loadIdentity(roomId);
+    const savedIdentity = loadIdentity(roomId);
 
-    setIdentity(identity);
+    setIdentity(savedIdentity);
     setToken(fromHash ?? fromSession ?? null);
   }, [roomId]);
 

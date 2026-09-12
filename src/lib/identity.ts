@@ -1,15 +1,13 @@
 import { generateToken } from '@/lib/generateToken';
 
 /**
- * Identifies a player in a room.
- *
- * - Authenticated host: `hostUserId` is set, `guestId` is undefined.
- * - Anonymous guest:    `guestId` is set,    `hostUserId` is undefined.
+ * Ідентифікує гравця у кімнаті.
+ * - Хост: guestId = Supabase user.sub (збігається з hostId на сервері).
+ * - Гість: випадковий guestId.
  */
 export interface PlayerIdentity {
   name: string;
-  guestId?: string;
-  hostUserId?: string;
+  guestId: string;
 }
 
 function storageKey(roomId: string) {
@@ -30,7 +28,7 @@ function saveIdentity(roomId: string, identity: PlayerIdentity): void {
   localStorage.setItem(storageKey(roomId), JSON.stringify(identity));
 }
 
-export function createGuestIdentity(
+export function createIdentity(
   roomId: string,
   name: string,
   presetGuestId?: string,
@@ -39,12 +37,6 @@ export function createGuestIdentity(
     name: name.trim(),
     guestId: presetGuestId ?? generateToken(),
   };
-  saveIdentity(roomId, identity);
-  return identity;
-}
-
-export function createHostIdentity(roomId: string, name: string, hostUserId: string): PlayerIdentity {
-  const identity: PlayerIdentity = { name: name.trim(), hostUserId };
   saveIdentity(roomId, identity);
   return identity;
 }

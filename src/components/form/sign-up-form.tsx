@@ -1,61 +1,59 @@
-"use client";
+'use client';
 
-import React from "react";
-import Form from "next/form";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import Form from 'next/form';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { signupAction } from "@/app/(main)/(auth)/actions";
-import { AuthActionResult } from "@/lib/types/auth";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { signupAction } from '@/lib/actions/auth';
+import { AuthActionResult } from '@/lib/types/auth';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const initialState: AuthActionResult = {
   success: false,
-  message: undefined,
-  errors: undefined,
 };
 
 export function SignUpForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<'div'>) {
   const router = useRouter();
 
   const [state, formAction, isPending] = React.useActionState(
-    async (prevState: AuthActionResult, formData: FormData) => {
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
-      // Зверніть увагу: name має співпадати з ключем у signupSchema (repeatPassword)
-      const repeatPassword = formData.get("repeatPassword") as string;
+    async (_prevState: AuthActionResult, formData: FormData) => {
+      const origin =
+        typeof window !== 'undefined' ? window.location.origin : '';
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      const repeatPassword = formData.get('repeatPassword') as string;
 
       return signupAction({ email, password, repeatPassword }, origin);
     },
-    initialState
+    initialState,
   );
 
   React.useEffect(() => {
     if (state.success) {
-      router.push("/sign-up-success");
+      router.push('/sign-up-success');
     }
   }, [state.success, router]);
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
-          <CardDescription>Create a new account</CardDescription>
+          <CardTitle className="text-2xl">Реєстрація</CardTitle>
+          <CardDescription>Створіть новий акаунт</CardDescription>
         </CardHeader>
         <CardContent>
           <Form action={formAction}>
@@ -70,23 +68,22 @@ export function SignUpForm({
                   required
                 />
                 {state.errors?.email && (
-                  <p className="text-xs text-red-500">{state.errors.email.join(", ")}</p>
+                  <p className="text-xs text-destructive">
+                    {state.errors.email.join(', ')}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                />
+                <Label htmlFor="password">Пароль</Label>
+                <Input id="password" name="password" type="password" required />
                 {state.errors?.password && (
-                  <p className="text-xs text-red-500">{state.errors.password.join(", ")}</p>
+                  <p className="text-xs text-destructive">
+                    {state.errors.password.join(', ')}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="repeatPassword">Repeat Password</Label>
+                <Label htmlFor="repeatPassword">Повторіть пароль</Label>
                 <Input
                   id="repeatPassword"
                   name="repeatPassword"
@@ -94,20 +91,22 @@ export function SignUpForm({
                   required
                 />
                 {state.errors?.repeatPassword && (
-                  <p className="text-xs text-destructive">{state.errors.repeatPassword.join(", ")}</p>
+                  <p className="text-xs text-destructive">
+                    {state.errors.repeatPassword.join(', ')}
+                  </p>
                 )}
               </div>
               {state.message && (
                 <p className="text-sm text-destructive">{state.message}</p>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Creating an account..." : "Sign up"}
+                {isPending ? 'Створення акаунта…' : 'Зареєструватися'}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
+              Вже є акаунт?{' '}
               <Link href="/login" className="underline underline-offset-4">
-                Login
+                Увійти
               </Link>
             </div>
           </Form>

@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import JoinForm from '@/components/form/join-form';
-import { PageContext } from '@/components/providers/page-provider';
+import { usePageContext } from '@/components/providers/page-provider';
 
 function RoomGuard({ children }: { children: ReactNode }) {
-  const { identity } = useContext(PageContext)!;
+  const { identity } = usePageContext();
   if (identity) {
     return <>{children}</>; // Просто пускаємо всередину
   }
@@ -19,10 +19,8 @@ function RoomGuard({ children }: { children: ReactNode }) {
       </div>
 
       {/* Оверлей з формою */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-background/20">
-        <div className="p-6 bg-card border border-border rounded-xl shadow-xl">
-          <JoinForm />
-        </div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+        <JoinForm />
       </div>
     </>
   );

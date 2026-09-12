@@ -1,58 +1,56 @@
-"use client";
+'use client';
 
-import React from "react";
-import Form from "next/form";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import Form from 'next/form';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { loginAction } from "@/app/(main)/(auth)/actions";
-import { AuthActionResult } from "@/lib/types/auth";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { loginAction } from '@/lib/actions/auth';
+import { AuthActionResult } from '@/lib/types/auth';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const initialState: AuthActionResult = {
   success: false,
-  message: undefined,
-  errors: undefined,
 };
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<'div'>) {
   const router = useRouter();
 
   const [state, formAction, isPending] = React.useActionState(
-    async (prevState: AuthActionResult, formData: FormData) => {
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
+    async (_prevState: AuthActionResult, formData: FormData) => {
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
       return loginAction({ email, password });
     },
-    initialState
+    initialState,
   );
 
   React.useEffect(() => {
     if (state.success) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     }
   }, [state.success, router]);
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Вхід</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Уведіть email, щоб увійти у свій акаунт
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -68,40 +66,39 @@ export function LoginForm({
                   required
                 />
                 {state.errors?.email && (
-                  <p className="text-xs text-red-500">{state.errors.email.join(", ")}</p>
+                  <p className="text-xs text-destructive">
+                    {state.errors.email.join(', ')}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Пароль</Label>
                   <Link
                     href="/forgot-password"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
-                    Forgot your password?
+                    Забули пароль?
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                />
+                <Input id="password" name="password" type="password" required />
                 {state.errors?.password && (
-                  <p className="text-xs text-red-500">{state.errors.password.join(", ")}</p>
+                  <p className="text-xs text-destructive">
+                    {state.errors.password.join(', ')}
+                  </p>
                 )}
               </div>
               {state.message && (
                 <p className="text-sm text-destructive">{state.message}</p>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Logging in..." : "Login"}
+                {isPending ? 'Вхід…' : 'Увійти'}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Немає акаунта?{' '}
               <Link href="/sign-up" className="underline underline-offset-4">
-                Sign up
+                Зареєструватися
               </Link>
             </div>
           </Form>

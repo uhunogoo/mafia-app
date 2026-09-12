@@ -1,32 +1,27 @@
-import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { requireUser } from '@/lib/supabase/auth';
 import CreateGame from '@/components/create-game';
-
-async function requireUser() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) redirect('/login');
-  return data.claims;
-}
 
 export default async function DashboardPage() {
   const user = await requireUser();
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-8">
-      <div>
-        <h1 className="font-bold text-3xl mb-2">Dashboard</h1>
-        <p className="text-muted-foreground text-sm">
-          Logged in as <span className="font-medium">{user.email}</span>
-        </p>
-      </div>
+    <div className="mx-auto w-full max-w-5xl px-5 py-8">
+      <div className="flex flex-col gap-8">
+        <div>
+          <h1 className="mb-2 text-3xl font-bold">Дашборд</h1>
+          <p className="text-sm text-muted-foreground">
+            Ви ввійшли як <span className="font-medium">{user.email}</span>
+          </p>
+        </div>
 
-      <div className="flex flex-col gap-4 max-w-sm">
-        <h2 className="font-semibold text-xl">Start a game</h2>
-        <p className="text-sm text-muted-foreground">
-          Create a new room and share the invite link with other players.
-        </p>
-        <CreateGame user={user} />
+        <div className="flex max-w-sm flex-col gap-4">
+          <h2 className="text-xl font-semibold">Почати гру</h2>
+          <p className="text-sm text-muted-foreground">
+            Створіть кімнату та поділіться посиланням-запрошенням з іншими
+            гравцями.
+          </p>
+          <CreateGame user={user} />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Suspense } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Suspense } from 'react';
 
 async function ErrorContent({
   searchParams,
@@ -11,13 +11,9 @@ async function ErrorContent({
   return (
     <>
       {params?.error ? (
-        <p className="text-sm text-muted-foreground">
-          Code error: {params.error}
-        </p>
+        <p className="text-sm text-muted-foreground">Код помилки: {params.error}</p>
       ) : (
-        <p className="text-sm text-muted-foreground">
-          An unspecified error occurred.
-        </p>
+        <p className="text-sm text-muted-foreground">Сталася невідома помилка.</p>
       )}
     </>
   );
@@ -34,9 +30,7 @@ export default function Page({
         <div className="flex flex-col gap-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">
-                Sorry, something went wrong.
-              </CardTitle>
+              <CardTitle className="text-2xl">Щось пішло не так.</CardTitle>
             </CardHeader>
             <CardContent>
               <Suspense>

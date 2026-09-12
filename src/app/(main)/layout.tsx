@@ -1,14 +1,4 @@
-import { Geist } from "next/font/google";
-
-import AppNav from "@/components/app-nav";
-import { AppLayout } from "@/components/app-layout";
-import AppFooter from "@/components/app-footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
-});
+import { SiteHeader } from '@/components/site-header';
 
 export default function MainLayout({
   children,
@@ -16,12 +6,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <AppNav />
-      <AppLayout className={`${geistSans.className} antialiased`}>
-        {children}
-      </AppLayout>
-      <AppFooter />
-    </>
+    <div className="flex min-h-svh flex-col">
+      <SiteHeader />
+      <main className="flex-1">{children}</main>
+    </div>
   );
 }

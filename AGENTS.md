@@ -9,22 +9,25 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 <!-- END:nextjs-agent-rules -->
 
 ## Tech Stack
-TypeScript, Next.js 16 (App Router), React 19, Zustand, Zod, Tailwind CSS v4, @colyseus/react.
+TypeScript, Next.js 16 (App Router, `proxy.ts` замість middleware), React 19, Zod, Tailwind CSS v4, Supabase (auth), Colyseus (`@colyseus/react` + `@colyseus/sdk`) — ігровий сервер у сусідньому каталозі `../mafia-server`.
 
 ## Commands
 - Install: `npm install`
-- Dev: `npm dev`
-- Build: `npm build`
-- Unit tests: `npm vitest run`
-- Lint: `npm lint`
+- Dev: `npm run dev`
+- Build: `npm run build`
+- Lint: `npm run lint`
+- Ігровий сервер: `npm start` у `../mafia-server` (порт 2567), його тести: `npm test` там само.
 
 ## Architecture
 - Server Components by default. `'use client'` only for
   interactivity (canvas, local state).
-- All DB queries — only via Route Handlers or Server Actions.
-- Client components NEVER access Supabase directly.
-- Structure: `src/components` (UI), `src/lib` (supabase clients, utils),
-  `src/app` (routes).
+- Auth — через Supabase SSR-клієнти (`src/lib/supabase/*`);
+  хелпери `getCurrentUser` / `requireUser` у `src/lib/supabase/auth.ts`.
+- Room state (гравці, фази) — только через Colyseus (`src/components/room/room-context.tsx`);
+  Supabase не зберігає стан кімнати.
+- Structure: `src/components` (UI + `room/` + `form/` + `ui/`), `src/lib`
+  (clients, actions, validations), `src/app` (routes; `(main)` — сторінки з
+  хедером, `room/[roomId]` — без хедера, відкрита для гостей).
 
 ## Boundaries
 Always:
@@ -34,11 +37,10 @@ Ask first:
 
 Never:
 - Use the `service_role` key on the client.
-- Call Supabase directly from a client component.
 - Use `NEXT_PUBLIC_` for secrets.
 - Use inline `style={{}}` — only Tailwind utility classes
   and `@theme` tokens.
 
 ## Testing
-Vitest — for business logic (`src/lib`, server actions).
-Playwright — for critical E2E flows (auth, checkout, etc.).
+Тести кімнати — `npm test` у `../mafia-server` (mocha + @colyseus/testing).
+UI-тексти — українською.

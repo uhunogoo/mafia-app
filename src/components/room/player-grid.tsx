@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
 import { Crown, UserRound } from 'lucide-react';
 
 import { useMafiaState, type RoomPlayerView } from '@/components/room/room-context';
-import { PageContext } from '@/components/providers/page-provider';
+import { usePageContext } from '@/components/providers/page-provider';
 
 function PlayerSlot({ player, isYou }: { player: RoomPlayerView; isYou: boolean }) {
   const initial = (player.name || '?').charAt(0).toUpperCase();
@@ -45,7 +44,7 @@ function EmptySlot() {
 export default function PlayerGrid() {
   const players = useMafiaState((s) => s.players);
   const maxPlayers = useMafiaState((s) => s.maxPlayers);
-  const { identity } = React.useContext(PageContext)!;
+  const { identity } = usePageContext();
   const myGuestId = identity?.guestId ?? null;
 
   const capacity = Math.max(1, maxPlayers ?? 12);

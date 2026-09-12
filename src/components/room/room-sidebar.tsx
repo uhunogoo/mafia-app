@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useContext } from 'react';
 import { Shuffle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -8,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import InviteLink from '@/components/invite-link';
 import { RoomContext, useMafiaState } from '@/components/room/room-context';
-import { PageContext } from '@/components/providers/page-provider';
+import { usePageContext } from '@/components/providers/page-provider';
 import { roleComposition } from '@/lib/role-composition';
 import { cn } from '@/lib/utils';
 
@@ -27,7 +26,7 @@ export default function RoomSidebar() {
   const { room } = RoomContext.useRoom();
   const players = useMafiaState((s) => s.players);
   const maxPlayersState = useMafiaState((s) => s.maxPlayers);
-  const { roomId, token, identity } = useContext(PageContext)!;
+  const { roomId, token, identity } = usePageContext();
 
   const maxPlayers = maxPlayersState ?? 12;
   const count = players ? Object.keys(players).length : 0;

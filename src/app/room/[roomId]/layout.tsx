@@ -1,15 +1,13 @@
 import PageProvider from '@/components/providers/page-provider';
 
-type LayaoutTypes = {
+export default function RoomLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
-};
-
-function RoomLayout({ children }: LayaoutTypes) {
+}>) {
   return (
     <PageProvider>
       {children}
     </PageProvider>
   );
 }
-
-export default RoomLayout;

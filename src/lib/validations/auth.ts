@@ -11,11 +11,10 @@ export const signupSchema = z
     email: emailSchema,
     password: passwordSchema,
     repeatPassword: passwordSchema,
-    username: z.string().min(3).max(20).optional(),
   })
   .refine((data) => data.password === data.repeatPassword, {
-    message: "Passwords do not match",
-    path: ["repeatPassword"],
+    message: 'Паролі не збігаються',
+    path: ['repeatPassword'],
   });
 
 export type LoginInput = z.infer<typeof loginSchema>;
