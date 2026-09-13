@@ -13,10 +13,13 @@ function PlayerSlot({ player, isYou }: { player: RoomPlayerView; isYou: boolean 
           {initial}
         </div>
         {player.isHost && (
-          <Crown
-            className="absolute -top-2 -right-2 size-5 text-amber-500"
-            aria-label="Хост"
-          />
+          <>
+            <Crown
+              className="absolute -top-2 -right-2 size-5 text-amber-500"
+              aria-hidden
+            />
+            <span className="sr-only">Хост</span>
+          </>
         )}
       </div>
       <span

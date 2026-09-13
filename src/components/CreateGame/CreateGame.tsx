@@ -6,7 +6,7 @@ import type { JwtPayload } from '@supabase/auth-js';
 
 import { client } from '@/lib/colyseus/client';
 import { generateToken } from '@/lib/generateToken';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 
 interface CreateGameProps {
   user: JwtPayload;
@@ -32,7 +32,7 @@ function CreateGame({ user }: CreateGameProps) {
       router.push(`/room/${room.roomId}#token=${token}`);
     } catch (err: unknown) {
       console.error('Failed to create room:', err);
-      setError('Failed to create room. Please try again.');
+      setError('Не вдалося створити кімнату. Спробуйте ще раз.');
     } finally {
       setIsLoading(false);
     }
@@ -40,9 +40,11 @@ function CreateGame({ user }: CreateGameProps) {
 
   return (
     <>
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-destructive">{error}</p>
+      )}
       <Button size="lg" className="w-full" onClick={handleCreate} disabled={isLoading}>
-        {isLoading ? 'Creating…' : 'Створити кімнату'}
+        {isLoading ? 'Створення…' : 'Створити кімнату'}
       </Button>
     </>
   );

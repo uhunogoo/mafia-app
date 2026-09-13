@@ -5,7 +5,7 @@ import { Mic, Settings, Video } from 'lucide-react';
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
 import { phaseLabel } from '@/lib/phase';
 import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 
 function RoomTopBar() {
   const phase = RoomContext.useRoomState((s) => s.phase);
@@ -16,7 +16,7 @@ function RoomTopBar() {
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-4 rounded-xl border bg-card px-4">
-      <div className="flex min-w-0 items-center gap-2">
+      <div aria-live="polite" className="flex min-w-0 items-center gap-2">
         <span className="size-2 shrink-0 rounded-full bg-green-500" aria-hidden />
         <span className="truncate text-sm font-medium">{phaseLabel(phase)}</span>
       </div>

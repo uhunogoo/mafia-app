@@ -6,12 +6,12 @@ import { Shuffle } from 'lucide-react';
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
 import { roleComposition } from '@/lib/role-composition';
 import { cn } from '@/lib/utils';
-import InviteLink from '@/components/InviteLink';
-import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
 import { PageContext } from '@/components/Providers/PageProvider';
-import { Button } from '@/components/UI/Button';
-import { Label } from '@/components/UI/Label';
+import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
+import Button from '@/components/UI/Button';
+import Label from '@/components/UI/Label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
+import InviteLink from '@/components/InviteLink';
 
 const PLAYER_OPTIONS = [10, 11, 12];
 
@@ -135,7 +135,7 @@ function RoomSidebar() {
             </div>
 
             <div className="flex flex-col gap-1">
-              <p className="text-sm">
+              <p role="status" className="text-sm">
                 {isFull
                   ? 'Кімната повна, хост може розпочати гру'
                   : `Ще ${missing} ${playersWord(missing)}`}

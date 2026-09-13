@@ -1,4 +1,4 @@
-'use client';
+import { RULES } from '@/lib/rules';
 
 import {
   DialogContent,
@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/UI/Dialog';
-import { RULES } from '@/lib/rules';
 
 function RulesModal() {
   return (

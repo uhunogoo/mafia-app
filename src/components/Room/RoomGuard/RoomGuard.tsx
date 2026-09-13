@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import JoinForm from '@/components/Form/JoinForm';
 import { PageContext } from '@/components/Providers/PageProvider';
+import JoinForm from '@/components/Form/JoinForm';
 
 function RoomGuard({ children }: { children: React.ReactNode }) {
   const page = React.useContext(PageContext);

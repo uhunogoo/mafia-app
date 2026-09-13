@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { Button } from '@/components/UI/Button';
 import { getCurrentUser } from '@/lib/supabase/auth';
+import Button from '@/components/UI/Button';
 
 export default async function Home() {
   const user = await getCurrentUser();

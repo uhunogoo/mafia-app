@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { getCurrentUser } from '@/lib/supabase/auth';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import ThemeToggle from '@/components/ThemeToggle';
 import LogoutButton from '@/components/LogoutButton';
 

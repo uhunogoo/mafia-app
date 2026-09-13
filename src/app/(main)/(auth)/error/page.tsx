@@ -1,5 +1,6 @@
+import React from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
-import { Suspense } from 'react';
 
 async function ErrorContent({
   searchParams,
@@ -33,9 +34,9 @@ export default function Page({
               <CardTitle className="text-2xl">Щось пішло не так.</CardTitle>
             </CardHeader>
             <CardContent>
-              <Suspense>
+              <React.Suspense>
                 <ErrorContent searchParams={searchParams} />
-              </Suspense>
+              </React.Suspense>
             </CardContent>
           </Card>
         </div>

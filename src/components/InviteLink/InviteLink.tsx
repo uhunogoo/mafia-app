@@ -3,8 +3,8 @@
 import React from 'react';
 import { CheckIcon, ClipboardIcon } from 'lucide-react';
 
-import { Button } from '@/components/UI/Button';
-import { Label } from '@/components/UI/Label';
+import Button from '@/components/UI/Button';
+import Label from '@/components/UI/Label';
 
 interface InviteLinkProps {
   roomId: string;

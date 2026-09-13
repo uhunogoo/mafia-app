@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { loginAction } from '@/lib/actions/auth';
 import { AuthActionResult } from '@/lib/types/auth';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import {
   Card,
   CardContent,
@@ -16,8 +16,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/UI/Card';
-import { Input } from '@/components/UI/Input';
-import { Label } from '@/components/UI/Label';
+import Input from '@/components/UI/Input';
+import Label from '@/components/UI/Label';
 
 const initialState: AuthActionResult = {
   success: false,
@@ -71,7 +71,7 @@ function LoginForm({
                   required
                 />
                 {state.errors?.email && (
-                  <p className="text-xs text-destructive">
+                  <p role="alert" className="text-xs text-destructive">
                     {state.errors.email.join(', ')}
                   </p>
                 )}
@@ -88,13 +88,15 @@ function LoginForm({
                 </div>
                 <Input id="password" name="password" type="password" required />
                 {state.errors?.password && (
-                  <p className="text-xs text-destructive">
+                  <p role="alert" className="text-xs text-destructive">
                     {state.errors.password.join(', ')}
                   </p>
                 )}
               </div>
               {state.message && (
-                <p className="text-sm text-destructive">{state.message}</p>
+                <p role="alert" className="text-sm text-destructive">
+                  {state.message}
+                </p>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
                 {isPending ? 'Вхід…' : 'Увійти'}

@@ -3,7 +3,7 @@
 import React from 'react';
 import { BookOpen } from 'lucide-react';
 
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
 import { Dialog, DialogTrigger } from '@/components/UI/Dialog';
 import RulesModal from '@/components/Room/RulesModal';

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import {
   Card,
   CardContent,
@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/UI/Card';
-import { Input } from '@/components/UI/Input';
-import { Label } from '@/components/UI/Label';
+import Input from '@/components/UI/Input';
+import Label from '@/components/UI/Label';
 
 function UpdatePasswordForm({
   className,
@@ -43,6 +43,10 @@ function UpdatePasswordForm({
     }
   }
 
+  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setPassword(e.target.value);
+  }
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...delegated}>
       <Card>
@@ -61,10 +65,14 @@ function UpdatePasswordForm({
                   placeholder="Новий пароль"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                 />
               </div>
-              {error && <p className="text-sm text-destructive">{error}</p>}
+              {error && (
+                <p role="alert" className="text-sm text-destructive">
+                  {error}
+                </p>
+              )}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? 'Збереження…' : 'Зберегти пароль'}
               </Button>

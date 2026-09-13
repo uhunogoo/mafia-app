@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
-export function Input({
+function Input({
   className,
   type,
   ref,
@@ -20,3 +20,5 @@ export function Input({
     />
   );
 }
+
+export default Input;

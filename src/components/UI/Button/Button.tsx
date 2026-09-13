@@ -40,7 +40,7 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
-export function Button({
+function Button({
   children,
   className,
   variant,
@@ -62,3 +62,5 @@ export function Button({
     </Comp>
   );
 }
+
+export default Button;

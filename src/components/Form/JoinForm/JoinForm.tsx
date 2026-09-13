@@ -4,7 +4,7 @@ import React from 'react';
 
 import { createIdentity } from '@/lib/identity';
 import { PageContext } from '@/components/Providers/PageProvider';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import {
   Card,
   CardContent,
@@ -12,8 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/UI/Card';
-import { Input } from '@/components/UI/Input';
-import { Label } from '@/components/UI/Label';
+import Input from '@/components/UI/Input';
+import Label from '@/components/UI/Label';
 
 function JoinForm() {
   const page = React.useContext(PageContext);
@@ -63,7 +63,9 @@ function JoinForm() {
               autoFocus
               maxLength={32}
             />
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && (
+              <p role="alert" className="text-sm text-destructive">{error}</p>
+            )}
           </div>
           <Button type="submit" className="w-full">
             Приєднатися

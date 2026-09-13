@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
-import { Button } from '@/components/UI/Button';
+import Button from '@/components/UI/Button';
 import {
   Card,
   CardContent,
@@ -13,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/UI/Card';
-import { Input } from '@/components/UI/Input';
-import { Label } from '@/components/UI/Label';
+import Input from '@/components/UI/Input';
+import Label from '@/components/UI/Label';
 
 function ForgotPasswordForm({
   className,
@@ -44,6 +44,10 @@ function ForgotPasswordForm({
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setEmail(e.target.value);
   }
 
   return (
@@ -80,10 +84,14 @@ function ForgotPasswordForm({
                     placeholder="m@example.com"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={handleEmailChange}
                   />
                 </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && (
+                  <p role="alert" className="text-sm text-destructive">
+                    {error}
+                  </p>
+                )}
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? 'Надсилання…' : 'Надіслати лист'}
                 </Button>

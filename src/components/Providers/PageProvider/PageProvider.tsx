@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
 import { useParams } from 'next/navigation';
+
+import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
 
 export interface PageContextValue {
   roomId: string;
