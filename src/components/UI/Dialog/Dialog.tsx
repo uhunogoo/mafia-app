@@ -1,34 +1,38 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-function Dialog(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
-}
-
-function DialogTrigger(
-  props: React.ComponentProps<typeof DialogPrimitive.Trigger>,
+export function Dialog(
+  delegated: React.ComponentProps<typeof DialogPrimitive.Root>,
 ) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
+  return <DialogPrimitive.Root data-slot="dialog" {...delegated} />;
 }
 
-function DialogPortal(
-  props: React.ComponentProps<typeof DialogPrimitive.Portal>,
+export function DialogTrigger(
+  delegated: React.ComponentProps<typeof DialogPrimitive.Trigger>,
 ) {
-  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
+  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...delegated} />;
 }
 
-function DialogClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
+export function DialogPortal(
+  delegated: React.ComponentProps<typeof DialogPrimitive.Portal>,
+) {
+  return <DialogPrimitive.Portal data-slot="dialog-portal" {...delegated} />;
 }
 
-function DialogOverlay({
+export function DialogClose(
+  delegated: React.ComponentProps<typeof DialogPrimitive.Close>,
+) {
+  return <DialogPrimitive.Close data-slot="dialog-close" {...delegated} />;
+}
+
+export function DialogOverlay({
   className,
-  ...props
+  ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
@@ -37,15 +41,15 @@ function DialogOverlay({
         'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50',
         className,
       )}
-      {...props}
+      {...delegated}
     />
   );
 }
 
-function DialogContent({
+export function DialogContent({
   className,
   children,
-  ...props
+  ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Content>) {
   return (
     <DialogPortal>
@@ -56,11 +60,11 @@ function DialogContent({
           'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-xl border bg-card p-6 shadow-lg duration-200 sm:max-w-lg',
           className,
         )}
-        {...props}
+        {...delegated}
       >
         {children}
         <DialogPrimitive.Close
-          className="absolute top-4 right-4 rounded-md p-1 opacity-70 transition-opacity hover:bg-accent hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none"
+          className="absolute top-4 right-4 rounded-md p-1 opacity-70 transition-opacity hover:bg-accent hover:opacity-100 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none"
           aria-label="Закрити"
         >
           <XIcon className="size-4" />
@@ -70,61 +74,57 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+export function DialogHeader({
+  className,
+  ...delegated
+}: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-header"
       className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)}
-      {...props}
+      {...delegated}
     />
   );
 }
 
-function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
+export function DialogFooter({
+  className,
+  ...delegated
+}: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)}
-      {...props}
+      className={cn(
+        'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end',
+        className,
+      )}
+      {...delegated}
     />
   );
 }
 
-function DialogTitle({
+export function DialogTitle({
   className,
-  ...props
+  ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn('text-lg font-semibold leading-none', className)}
-      {...props}
+      {...delegated}
     />
   );
 }
 
-function DialogDescription({
+export function DialogDescription({
   className,
-  ...props
+  ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cn('text-sm text-muted-foreground', className)}
-      {...props}
+      {...delegated}
     />
   );
 }
-
-export {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-};

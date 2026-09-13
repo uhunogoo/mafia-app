@@ -6,6 +6,7 @@ import { createRoomContext } from '@colyseus/react';
 import { client } from '@/lib/colyseus/client';
 import { PageContext } from '@/components/Providers/PageProvider';
 import StatusMessage from '@/components/UI/StatusMessage';
+import RoomStatus from '@/components/Room/RoomStatus';
 
 /**
  * Клиентське уявлення про MafiaState (mafia-server/src/rooms/schema/MafiaState.ts).
@@ -66,38 +67,6 @@ function RoomConnectionProvider({ children }: { children?: React.ReactNode }) {
       {children}
     </RoomContext.RoomProvider>
   );
-}
-
-/** Смуга стану: підключення, помилки приєднання та серверні "error" повідомлення. */
-function RoomStatus() {
-  const { room, error, isConnecting } = RoomContext.useRoom();
-  const [serverError, setServerError] = React.useState<string | null>(null);
-
-  RoomContext.useRoomMessage('*', (type: string | number, payload: unknown) => {
-    if (type === 'error') setServerError(String(payload));
-  });
-
-  // Нове підключення — скидаємо останню серверну помилку
-  React.useEffect(() => {
-    setServerError(null);
-  }, [room?.roomId]);
-
-  if (error) {
-    return <StatusMessage variant="error">Помилка: {error.message}</StatusMessage>;
-  }
-  if (isConnecting) {
-    return <StatusMessage variant="loading">Підключення до кімнати…</StatusMessage>;
-  }
-  if (serverError) {
-    return (
-      <div className="mx-auto w-full max-w-[1600px] px-4 pt-4 md:px-6 md:pt-6">
-        <div className="rounded-xl border border-destructive/50 bg-destructive/10 px-4 py-2 text-sm text-destructive">
-          {serverError}
-        </div>
-      </div>
-    );
-  }
-  return null;
 }
 
 export default RoomConnectionProvider;
