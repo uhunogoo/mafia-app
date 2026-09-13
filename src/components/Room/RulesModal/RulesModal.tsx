@@ -12,7 +12,9 @@ function RulesModal() {
   return (
     <DialogContent className="max-h-[85vh] overflow-hidden sm:max-w-2xl">
       <DialogHeader>
-        <DialogTitle>Правила гри «Мафія»</DialogTitle>
+        <DialogTitle asChild>
+          <Title as="h2" className="text-lg">Правила гри «Мафія»</Title>
+        </DialogTitle>
         <DialogDescription>Класичні правила для гри компанією</DialogDescription>
       </DialogHeader>
       <div className="flex max-h-[60vh] flex-col gap-5 overflow-y-auto pr-1">

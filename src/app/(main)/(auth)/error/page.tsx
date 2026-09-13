@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
+import Title from '@/components/UI/Title';
 
 async function ErrorContent({
   searchParams,
@@ -28,7 +29,11 @@ export default function Page({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Щось пішло не так.</CardTitle>
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">
+            Щось пішло не так.
+          </Title>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <React.Suspense>

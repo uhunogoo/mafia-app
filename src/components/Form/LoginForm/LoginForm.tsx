@@ -18,6 +18,7 @@ import {
 } from '@/components/UI/Card';
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
+import Title from '@/components/UI/Title';
 
 function LoginForm({
   className,
@@ -48,7 +49,9 @@ function LoginForm({
   return (
     <Card className={className} {...delegated}>
       <CardHeader>
-        <CardTitle className="text-2xl">Вхід</CardTitle>
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">Вхід</Title>
+        </CardTitle>
         <CardDescription>
           Уведіть email, щоб увійти у свій акаунт
         </CardDescription>

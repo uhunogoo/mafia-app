@@ -14,6 +14,7 @@ import {
 } from '@/components/UI/Card';
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
+import Title from '@/components/UI/Title';
 
 function ForgotPasswordForm({
   className,
@@ -52,8 +53,10 @@ function ForgotPasswordForm({
   return (
     <Card className={className} {...delegated}>
       <CardHeader>
-        <CardTitle className="text-2xl">
-          {success ? 'Перевірте пошту' : 'Відновлення пароля'}
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">
+            {success ? 'Перевірте пошту' : 'Відновлення пароля'}
+          </Title>
         </CardTitle>
         <CardDescription>
           {success

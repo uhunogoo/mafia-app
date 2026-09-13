@@ -5,12 +5,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/UI/Card';
+import Title from '@/components/UI/Title';
 
 export default function Page() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Дякуємо за реєстрацію!</CardTitle>
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">
+            Дякуємо за реєстрацію!
+          </Title>
+        </CardTitle>
         <CardDescription>Підтвердіть свою пошту</CardDescription>
       </CardHeader>
       <CardContent>

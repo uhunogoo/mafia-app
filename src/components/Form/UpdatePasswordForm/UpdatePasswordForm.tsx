@@ -14,6 +14,7 @@ import {
 } from '@/components/UI/Card';
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
+import Title from '@/components/UI/Title';
 
 function UpdatePasswordForm({
   className,
@@ -49,7 +50,9 @@ function UpdatePasswordForm({
   return (
     <Card className={className} {...delegated}>
       <CardHeader>
-        <CardTitle className="text-2xl">Новий пароль</CardTitle>
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">Новий пароль</Title>
+        </CardTitle>
         <CardDescription>Уведіть новий пароль нижче.</CardDescription>
       </CardHeader>
       <CardContent>

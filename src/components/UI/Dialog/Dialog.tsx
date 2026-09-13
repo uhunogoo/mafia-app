@@ -71,13 +71,15 @@ export function DialogHeader({
 }
 
 export function DialogTitle({
+  asChild,
   children,
   className,
   ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn('text-lg font-semibold leading-none', className)}
+      asChild={asChild}
+      className={cn('leading-none', className)}
       {...delegated}
     >
       {children}

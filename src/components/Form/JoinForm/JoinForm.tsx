@@ -14,6 +14,7 @@ import {
 } from '@/components/UI/Card';
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
+import Title from '@/components/UI/Title';
 
 function JoinForm() {
   const page = React.useContext(PageContext);
@@ -48,7 +49,9 @@ function JoinForm() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Приєднатися до гри</CardTitle>
+        <CardTitle asChild>
+          <Title as="h2" className="text-base">Приєднатися до гри</Title>
+        </CardTitle>
         <CardDescription>Як вас бачитимуть інші гравці?</CardDescription>
       </CardHeader>
       <CardContent>

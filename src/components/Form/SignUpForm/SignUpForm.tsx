@@ -18,6 +18,7 @@ import {
 } from '@/components/UI/Card';
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
+import Title from '@/components/UI/Title';
 
 function SignUpForm({
   className,
@@ -52,7 +53,9 @@ function SignUpForm({
   return (
     <Card className={className} {...delegated}>
       <CardHeader>
-        <CardTitle className="text-2xl">Реєстрація</CardTitle>
+        <CardTitle asChild>
+          <Title as="h1" className="text-2xl font-semibold">Реєстрація</Title>
+        </CardTitle>
         <CardDescription>Створіть новий акаунт</CardDescription>
       </CardHeader>
       <CardContent>

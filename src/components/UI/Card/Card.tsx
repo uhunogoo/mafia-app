@@ -1,4 +1,5 @@
 import React from 'react';
+import { Slot } from '@radix-ui/react-slot';
 
 import { cn } from '@/lib/utils';
 
@@ -40,19 +41,21 @@ export function CardHeader({
 }
 
 export function CardTitle({
+  asChild,
   children,
   className,
   ref,
   ...delegated
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<'div'> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : 'div';
   return (
-    <div
+    <Comp
       ref={ref}
-      className={cn('font-semibold leading-none tracking-tight', className)}
+      className={cn('leading-none tracking-tight', className)}
       {...delegated}
     >
       {children}
-    </div>
+    </Comp>
   );
 }
 
