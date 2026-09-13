@@ -1,9 +1,9 @@
-import RoomGuard from '@/components/room/room-guard';
-import PlayerGrid from '@/components/room/player-grid';
-import RoomSidebar from '@/components/room/room-sidebar';
-import RoomTopBar from '@/components/room/room-top-bar';
-import RulesCard from '@/components/room/rules-card';
-import { RoomConnectionProvider } from '@/components/room/room-context';
+import RoomGuard from '@/components/Room/RoomGuard';
+import PlayerGrid from '@/components/Room/PlayerGrid';
+import RoomSidebar from '@/components/Room/RoomSidebar';
+import RoomTopBar from '@/components/Room/RoomTopBar';
+import RulesCard from '@/components/Room/RulesCard';
+import RoomConnectionProvider from '@/components/Providers/RoomConnectionProvider';
 
 // roomId читається лише на клієнті (useParams у PageProvider) —
 // сторінка повністю статична, без доступу до params.

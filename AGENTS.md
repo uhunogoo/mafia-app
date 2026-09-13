@@ -23,11 +23,22 @@ TypeScript, Next.js 16 (App Router, `proxy.ts` замість middleware), React
   interactivity (canvas, local state).
 - Auth — через Supabase SSR-клієнти (`src/lib/supabase/*`);
   хелпери `getCurrentUser` / `requireUser` у `src/lib/supabase/auth.ts`.
-- Room state (гравці, фази) — только через Colyseus (`src/components/room/room-context.tsx`);
+- Room state (гравці, фази) — только через Colyseus
+  (`src/components/Providers/RoomConnectionProvider`);
   Supabase не зберігає стан кімнати.
-- Structure: `src/components` (UI + `room/` + `form/` + `ui/`), `src/lib`
-  (clients, actions, validations), `src/app` (routes; `(main)` — сторінки з
-  хедером, `room/[roomId]` — без хедера, відкрита для гостей).
+- Structure: `src/components` — folder-per-component у PascalCase з барелем
+  `index.ts` (`ComponentName/ComponentName.tsx`), групи `Form/`, `Room/`, `UI/`;
+  провайдери в `Providers/<ProviderName>/` — провайдер + його контекст
+  в одному файлі (контекст — named export, провайдер — default); компоненти
+  читають контекст напряму через `React.useContext` (з явним throw-guard-ом
+  для nullable), без хуків-обгорток у файлі провайдера; спільні константи —
+  `src/constants.ts`, окремі хуки — `src/hooks/use-*.ts` (kebab-case).
+  `src/lib` (clients, actions, validations), `src/app` (routes; `(main)` —
+  сторінки з хедером, `room/[roomId]` — без хедера, відкрита для гостей).
+- Components пишемо в стилі Joy of React (skill
+  `joy-of-react-tailwind-style`): function-декларації з `export default`
+  в кінці файла, хуки через `React.useX`, обробники `handleX` як
+  function-декларації, варіанти стилів через lookup-об'єкти.
 
 ## Boundaries
 Always:

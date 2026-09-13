@@ -1,4 +1,4 @@
-import PageProvider from '@/components/providers/page-provider';
+import PageProvider from '@/components/Providers/PageProvider';
 
 export default function RoomLayout({
   children,

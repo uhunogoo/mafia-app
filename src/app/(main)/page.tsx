@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/UI/Button';
 import { getCurrentUser } from '@/lib/supabase/auth';
 
 export default async function Home() {

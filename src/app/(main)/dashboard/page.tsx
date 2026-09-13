@@ -1,5 +1,5 @@
 import { requireUser } from '@/lib/supabase/auth';
-import CreateGame from '@/components/create-game';
+import CreateGame from '@/components/CreateGame';
 
 export default async function DashboardPage() {
   const user = await requireUser();
