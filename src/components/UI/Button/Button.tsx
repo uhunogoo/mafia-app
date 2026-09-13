@@ -41,6 +41,7 @@ export interface ButtonProps
 }
 
 export function Button({
+  children,
   className,
   variant,
   size,
@@ -56,6 +57,8 @@ export function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
       {...delegated}
-    />
+    >
+      {children}
+    </Comp>
   );
 }

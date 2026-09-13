@@ -6,28 +6,48 @@ import { XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
-export function Dialog(
-  delegated: React.ComponentProps<typeof DialogPrimitive.Root>,
-) {
-  return <DialogPrimitive.Root data-slot="dialog" {...delegated} />;
+export function Dialog({
+  children,
+  ...delegated
+}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  return (
+    <DialogPrimitive.Root data-slot="dialog" {...delegated}>
+      {children}
+    </DialogPrimitive.Root>
+  );
 }
 
-export function DialogTrigger(
-  delegated: React.ComponentProps<typeof DialogPrimitive.Trigger>,
-) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...delegated} />;
+export function DialogTrigger({
+  children,
+  ...delegated
+}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return (
+    <DialogPrimitive.Trigger data-slot="dialog-trigger" {...delegated}>
+      {children}
+    </DialogPrimitive.Trigger>
+  );
 }
 
-export function DialogPortal(
-  delegated: React.ComponentProps<typeof DialogPrimitive.Portal>,
-) {
-  return <DialogPrimitive.Portal data-slot="dialog-portal" {...delegated} />;
+export function DialogPortal({
+  children,
+  ...delegated
+}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+  return (
+    <DialogPrimitive.Portal data-slot="dialog-portal" {...delegated}>
+      {children}
+    </DialogPrimitive.Portal>
+  );
 }
 
-export function DialogClose(
-  delegated: React.ComponentProps<typeof DialogPrimitive.Close>,
-) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...delegated} />;
+export function DialogClose({
+  children,
+  ...delegated
+}: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return (
+    <DialogPrimitive.Close data-slot="dialog-close" {...delegated}>
+      {children}
+    </DialogPrimitive.Close>
+  );
 }
 
 export function DialogOverlay({
@@ -47,8 +67,8 @@ export function DialogOverlay({
 }
 
 export function DialogContent({
-  className,
   children,
+  className,
   ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Content>) {
   return (
@@ -75,6 +95,7 @@ export function DialogContent({
 }
 
 export function DialogHeader({
+  children,
   className,
   ...delegated
 }: React.ComponentProps<'div'>) {
@@ -83,11 +104,14 @@ export function DialogHeader({
       data-slot="dialog-header"
       className={cn('flex flex-col gap-1.5 text-center sm:text-left', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function DialogFooter({
+  children,
   className,
   ...delegated
 }: React.ComponentProps<'div'>) {
@@ -99,11 +123,14 @@ export function DialogFooter({
         className,
       )}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function DialogTitle({
+  children,
   className,
   ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
@@ -112,11 +139,14 @@ export function DialogTitle({
       data-slot="dialog-title"
       className={cn('text-lg font-semibold leading-none', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </DialogPrimitive.Title>
   );
 }
 
 export function DialogDescription({
+  children,
   className,
   ...delegated
 }: React.ComponentProps<typeof DialogPrimitive.Description>) {
@@ -125,6 +155,8 @@ export function DialogDescription({
       data-slot="dialog-description"
       className={cn('text-sm text-muted-foreground', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </DialogPrimitive.Description>
   );
 }

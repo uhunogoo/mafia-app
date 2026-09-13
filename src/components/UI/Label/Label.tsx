@@ -11,6 +11,7 @@ const labelVariants = cva(
 );
 
 export function Label({
+  children,
   className,
   ref,
   ...delegated
@@ -20,6 +21,8 @@ export function Label({
       ref={ref}
       className={cn(labelVariants(), className)}
       {...delegated}
-    />
+    >
+      {children}
+    </LabelPrimitive.Root>
   );
 }

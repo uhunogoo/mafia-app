@@ -3,6 +3,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 export function Card({
+  children,
   className,
   ref,
   ...delegated
@@ -15,11 +16,14 @@ export function Card({
         className,
       )}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function CardHeader({
+  children,
   className,
   ref,
   ...delegated
@@ -29,11 +33,14 @@ export function CardHeader({
       ref={ref}
       className={cn('flex flex-col space-y-1.5 p-6', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function CardTitle({
+  children,
   className,
   ref,
   ...delegated
@@ -43,11 +50,14 @@ export function CardTitle({
       ref={ref}
       className={cn('font-semibold leading-none tracking-tight', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function CardDescription({
+  children,
   className,
   ref,
   ...delegated
@@ -57,21 +67,27 @@ export function CardDescription({
       ref={ref}
       className={cn('text-sm text-muted-foreground', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
 export function CardContent({
+  children,
   className,
   ref,
   ...delegated
 }: React.ComponentProps<'div'>) {
   return (
-    <div ref={ref} className={cn('p-6 pt-0', className)} {...delegated} />
+    <div ref={ref} className={cn('p-6 pt-0', className)} {...delegated}>
+      {children}
+    </div>
   );
 }
 
 export function CardFooter({
+  children,
   className,
   ref,
   ...delegated
@@ -81,6 +97,8 @@ export function CardFooter({
       ref={ref}
       className={cn('flex items-center p-6 pt-0', className)}
       {...delegated}
-    />
+    >
+      {children}
+    </div>
   );
 }
