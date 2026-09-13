@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import Button from '@/components/UI/Button';
 import {
@@ -51,62 +50,56 @@ function ForgotPasswordForm({
   }
 
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...delegated}>
-      {success ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Перевірте пошту</CardTitle>
-            <CardDescription>Інструкції з відновлення надіслано</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Якщо ви реєструвалися з цим email і паролем, то отримаєте лист
-              для відновлення пароля.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">Відновлення пароля</CardTitle>
-            <CardDescription>
-              Уведіть email — ми надішлемо посилання для скидання пароля
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleResetPassword}>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                </div>
-                {error && (
-                  <p role="alert" className="text-sm text-destructive">
-                    {error}
-                  </p>
-                )}
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? 'Надсилання…' : 'Надіслати лист'}
-                </Button>
+    <Card className={className} {...delegated}>
+      <CardHeader>
+        <CardTitle className="text-2xl">
+          {success ? 'Перевірте пошту' : 'Відновлення пароля'}
+        </CardTitle>
+        <CardDescription>
+          {success
+            ? 'Інструкції з відновлення надіслано'
+            : 'Уведіть email — ми надішлемо посилання для скидання пароля'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {success ? (
+          <p className="text-sm text-muted-foreground">
+            Якщо ви реєструвалися з цим email і паролем, то отримаєте лист
+            для відновлення пароля.
+          </p>
+        ) : (
+          <form onSubmit={handleResetPassword}>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                  value={email}
+                  onChange={handleEmailChange}
+                />
               </div>
-              <div className="mt-4 text-center text-sm">
-                Вже є акаунт?{' '}
-                <Link href="/login" className="underline underline-offset-4">
-                  Увійти
-                </Link>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+              {error && (
+                <p role="alert" className="text-sm text-destructive">
+                  {error}
+                </p>
+              )}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Надсилання…' : 'Надіслати лист'}
+              </Button>
+            </div>
+            <div className="mt-4 text-center text-sm">
+              Вже є акаунт?{' '}
+              <Link href="/login" className="underline underline-offset-4">
+                Увійти
+              </Link>
+            </div>
+          </form>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

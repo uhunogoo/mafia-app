@@ -52,17 +52,19 @@ function PlayerGrid() {
   const myGuestId = identity?.guestId;
 
   return (
-    <section className="w-full rounded-xl border bg-background p-3 sm:p-4">
-      <div className="grid grid-cols-4 gap-2 sm:gap-3">
-        {range(capacity).map((seatIndex) => {
-          const seated = findSeatedPlayer(players, seatIndex, myGuestId);
-          return seated ? (
-            <PlayerSlot key={seatIndex} player={seated.player} isYou={seated.isYou} />
-          ) : (
-            <EmptySlot key={seatIndex} />
-          );
-        })}
-      </div>
+    <section className="grid w-full grid-cols-4 gap-2 rounded-xl border bg-background p-3 sm:gap-3 sm:p-4">
+      {range(capacity).map((seatIndex) => {
+        const seated = findSeatedPlayer(players, seatIndex, myGuestId);
+        return seated ? (
+          <PlayerSlot
+            key={seatIndex}
+            player={seated.player}
+            isYou={seated.isYou}
+          />
+        ) : (
+          <EmptySlot key={seatIndex} />
+        );
+      })}
     </section>
   );
 }

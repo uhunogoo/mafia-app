@@ -2,13 +2,14 @@ import Link from 'next/link';
 
 import { getCurrentUser } from '@/lib/supabase/auth';
 import Button from '@/components/UI/Button';
+import Title from '@/components/UI/Title';
 
 export default async function Home() {
   const user = await getCurrentUser();
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-5 py-24 text-center">
-      <h1 className="text-5xl font-bold tracking-tight">Мафія</h1>
+      <Title as="h1" className="text-5xl tracking-tight">Мафія</Title>
       <p className="max-w-xl text-balance text-muted-foreground">
         Класична гра компанією онлайн: створи кімнату, поділись посиланням
         з друзями та грай у мафію — ніч, день, голосування. Без реєстрації:

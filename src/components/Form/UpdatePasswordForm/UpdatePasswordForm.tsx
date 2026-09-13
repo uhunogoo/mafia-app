@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import Button from '@/components/UI/Button';
 import {
@@ -48,39 +47,37 @@ function UpdatePasswordForm({
   }
 
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...delegated}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Новий пароль</CardTitle>
-          <CardDescription>Уведіть новий пароль нижче.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleUpdatePassword}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="password">Новий пароль</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Новий пароль"
-                  required
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-              </div>
-              {error && (
-                <p role="alert" className="text-sm text-destructive">
-                  {error}
-                </p>
-              )}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Збереження…' : 'Зберегти пароль'}
-              </Button>
+    <Card className={className} {...delegated}>
+      <CardHeader>
+        <CardTitle className="text-2xl">Новий пароль</CardTitle>
+        <CardDescription>Уведіть новий пароль нижче.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleUpdatePassword}>
+          <div className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="password">Новий пароль</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Новий пароль"
+                required
+                value={password}
+                onChange={handlePasswordChange}
+              />
             </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+            {error && (
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
+            )}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Збереження…' : 'Зберегти пароль'}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -26,17 +26,15 @@ export default function Page({
   searchParams: Promise<{ error: string }>;
 }) {
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Щось пішло не так.</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <React.Suspense>
-            <ErrorContent searchParams={searchParams} />
-          </React.Suspense>
-        </CardContent>
-      </Card>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-2xl">Щось пішло не так.</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <React.Suspense>
+          <ErrorContent searchParams={searchParams} />
+        </React.Suspense>
+      </CardContent>
+    </Card>
   );
 }
