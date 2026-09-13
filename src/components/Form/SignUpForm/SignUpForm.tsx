@@ -5,6 +5,7 @@ import Form from 'next/form';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { AUTH_ACTION_INITIAL_STATE } from '@/constants';
 import { cn } from '@/lib/utils';
 import { signupAction } from '@/lib/actions/auth';
 import { AuthActionResult } from '@/lib/types/auth';
@@ -19,10 +20,6 @@ import {
 import Input from '@/components/UI/Input';
 import Label from '@/components/UI/Label';
 
-const initialState: AuthActionResult = {
-  success: false,
-};
-
 function SignUpForm({
   className,
   ...delegated
@@ -31,7 +28,7 @@ function SignUpForm({
 
   const [state, formAction, isPending] = React.useActionState(
     handleSignUp,
-    initialState,
+    AUTH_ACTION_INITIAL_STATE,
   );
 
   React.useEffect(() => {

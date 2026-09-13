@@ -85,20 +85,3 @@ export function CardContent({
     </div>
   );
 }
-
-export function CardFooter({
-  children,
-  className,
-  ref,
-  ...delegated
-}: React.ComponentProps<'div'>) {
-  return (
-    <div
-      ref={ref}
-      className={cn('flex items-center p-6 pt-0', className)}
-      {...delegated}
-    >
-      {children}
-    </div>
-  );
-}

@@ -14,6 +14,15 @@ function storageKey(roomId: string) {
   return `player:${roomId}`;
 }
 
+/** Ключі sessionStorage кімнати: записує CreateGame, читають PageProvider і JoinForm. */
+export function roomTokenKey(roomId: string) {
+  return `room_${roomId}_token`;
+}
+
+export function roomHostClaimKey(roomId: string) {
+  return `room_${roomId}_hostClaim`;
+}
+
 export function loadIdentity(roomId: string): PlayerIdentity | null {
   try {
     const raw = localStorage.getItem(storageKey(roomId));

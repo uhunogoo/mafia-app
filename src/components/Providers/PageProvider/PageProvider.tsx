@@ -3,7 +3,7 @@
 import React from 'react';
 import { useParams } from 'next/navigation';
 
-import { loadIdentity, type PlayerIdentity } from '@/lib/identity';
+import { loadIdentity, roomTokenKey, type PlayerIdentity } from '@/lib/identity';
 
 export interface PageContextValue {
   roomId: string;
@@ -21,7 +21,7 @@ function PageProvider({ children }: { children?: React.ReactNode }) {
 
   React.useEffect(() => {
     const fromHash = new URLSearchParams(window.location.hash.slice(1)).get('token');
-    const fromSession = sessionStorage.getItem(`room_${roomId}_token`);
+    const fromSession = sessionStorage.getItem(roomTokenKey(roomId));
     const savedIdentity = loadIdentity(roomId);
 
     setIdentity(savedIdentity);

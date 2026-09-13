@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { createIdentity } from '@/lib/identity';
+import { createIdentity, roomHostClaimKey } from '@/lib/identity';
 import { PageContext } from '@/components/Providers/PageProvider';
 import Button from '@/components/UI/Button';
 import {
@@ -36,7 +36,7 @@ function JoinForm() {
     }
     // Хост кімнати приєднується тим самим guestId, з яким створив кімнату
     // (claim живе у sessionStorage вкладки, де кімнату створили)
-    const hostClaim = sessionStorage.getItem(`room_${roomId}_hostClaim`);
+    const hostClaim = sessionStorage.getItem(roomHostClaimKey(roomId));
     setIdentity(createIdentity(roomId, trimmed, hostClaim ?? undefined));
   }
 
