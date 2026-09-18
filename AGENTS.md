@@ -8,50 +8,29 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Tech Stack
-TypeScript, Next.js 16 (App Router, `proxy.ts` замість middleware), React 19, Zod, Tailwind CSS v4, Supabase (auth), Colyseus (`@colyseus/react` + `@colyseus/sdk`) — ігровий сервер у сусідньому каталозі `../mafia-server`.
+# Mafia Game
 
-## Commands
-- Install: `npm install`
-- Dev: `npm run dev`
-- Build: `npm run build`
-- Lint: `npm run lint`
-- Ігровий сервер: `npm start` у `../mafia-server` (порт 2567), його тести: `npm test` там само.
+Multiplayer online Mafia: Next.js 16 client + Colyseus game server.
 
-## Architecture
-- Server Components by default. `'use client'` only for
-  interactivity (canvas, local state).
-- Auth — через Supabase SSR-клієнти (`src/lib/supabase/*`);
-  хелпери `getCurrentUser` / `requireUser` у `src/lib/supabase/auth.ts`.
-- Room state (гравці, фази) — только через Colyseus
-  (`src/components/Providers/RoomConnectionProvider`);
-  Supabase не зберігає стан кімнати.
-- Structure: `src/components` — folder-per-component у PascalCase з барелем
-  `index.ts` (`ComponentName/ComponentName.tsx`), групи `Form/`, `Room/`, `UI/`;
-  провайдери в `Providers/<ProviderName>/` — провайдер + його контекст
-  в одному файлі (контекст — named export, провайдер — default); компоненти
-  читають контекст напряму через `React.useContext` (з явним throw-guard-ом
-  для nullable), без хуків-обгорток у файлі провайдера; спільні константи —
-  `src/constants.ts`, окремі хуки — `src/hooks/use-*.ts` (kebab-case).
-  `src/lib` (clients, actions, validations), `src/app` (routes; `(main)` —
-  сторінки з хедером, `room/[roomId]` — без хедера, відкрита для гостей).
-- Components пишемо в стилі Joy of React (skill
-  `joy-of-react-tailwind-style`): function-декларації з `export default`
-  в кінці файла, хуки через `React.useX`, обробники `handleX` як
-  function-декларації, варіанти стилів через lookup-об'єкти.
+**Stack:** TypeScript, Next.js 16 (App Router, `proxy.ts`), React 19, Zod,
+Tailwind v4, Supabase (auth), Colyseus.
 
-## Boundaries
-Always:
-- Validate input data with Zod at the Server Action / Route Handler boundary.
-Ask first:
-- Before adding new dependencies.
+## Non-obvious rules (every task)
 
-Never:
-- Use the `service_role` key on the client.
-- Use `NEXT_PUBLIC_` for secrets.
-- Use inline `style={{}}` — only Tailwind utility classes
-  and `@theme` tokens.
+- Validate input with Zod at the Server Action / Route Handler boundary.
+- Ask first before adding new dependencies.
+- Never: `service_role` on the client · `NEXT_PUBLIC_` for secrets ·
+  inline `style={{}}` (Tailwind utilities and `@theme` tokens only).
 
-## Testing
-Тести кімнати — `npm test` у `../mafia-server` (mocha + @colyseus/testing).
-UI-тексти — українською.
+Full version, with rationale: [docs/boundaries.md](./docs/boundaries.md).
+
+## Detailed docs
+
+- [docs/README.md](./docs/README.md) — index of all topic files.
+- [docs/tech-stack.md](./docs/tech-stack.md) — technologies and versions.
+- [docs/commands.md](./docs/commands.md) — dev / build / lint / game server.
+- [docs/architecture.md](./docs/architecture.md) — folder layout, RSC,
+  providers.
+- [docs/code-style.md](./docs/code-style.md) — Joy of React conventions.
+- [docs/boundaries.md](./docs/boundaries.md) — always / ask first / never.
+- [docs/testing.md](./docs/testing.md) — mocha + UI text language.
