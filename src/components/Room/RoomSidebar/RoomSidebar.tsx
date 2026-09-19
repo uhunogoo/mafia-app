@@ -5,15 +5,15 @@ import { Shuffle } from 'lucide-react';
 
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
 import { roleComposition } from '@/lib/role-composition';
-import { cn } from '@/lib/utils';
 import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
 import Button from '@/components/UI/Button';
 import Label from '@/components/UI/Label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/UI/ToggleGroup';
 import InviteLink from '@/components/InviteLink';
 
-const PLAYER_OPTIONS = [10, 11, 12];
+const PLAYER_OPTIONS = [10, 11, 12] as const;
 
 function playersWord(n: number): string {
   const mod100 = n % 100;
@@ -45,7 +45,9 @@ function RoomSidebar() {
   const isHost = me?.isHost ?? false;
   const isFull = missing === 0;
 
-  function handlePlayerCountChange(option: number) {
+  function handlePlayerCountChange(value: string) {
+    const option = Number(value);
+    if (!Number.isFinite(option)) return;
     room?.send('setMaxPlayers', { maxPlayers: option });
   }
 
@@ -71,31 +73,24 @@ function RoomSidebar() {
           <>
             <div className="flex flex-col gap-1.5">
               <Label className="text-sm">Кількість гравців</Label>
-              <div
-                className="grid grid-cols-3 gap-1 rounded-lg border p-1"
-                role="radiogroup"
+              <ToggleGroup
+                type="single"
+                value={String(maxPlayers)}
+                onValueChange={handlePlayerCountChange}
+                disabled={!room}
                 aria-label="Кількість гравців"
+                className="grid grid-cols-3 gap-1 rounded-lg border p-1"
               >
                 {PLAYER_OPTIONS.map((option) => (
-                  <button
+                  <ToggleGroupItem
                     key={option}
-                    type="button"
-                    role="radio"
-                    aria-checked={maxPlayers === option}
-                    disabled={!room}
-                    onClick={() => handlePlayerCountChange(option)}
-                    className={cn(
-                      'h-8 rounded-md text-sm font-medium transition-colors',
-                      maxPlayers === option
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'text-muted-foreground hover:bg-accent',
-                      !room && 'cursor-not-allowed opacity-60',
-                    )}
+                    value={String(option)}
+                    className="h-8 rounded-md text-sm font-medium data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                   >
                     {option}
-                  </button>
+                  </ToggleGroupItem>
                 ))}
-              </div>
+              </ToggleGroup>
             </div>
 
             <div className="flex flex-col gap-1.5">
