@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] `src/components/Room/RoomGuard/RoomGuard.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
-- [ ] The empty-context throw-guard message references `RoomMembershipProvider` (not `PageProvider`).
-- [ ] `identity` is read from the new context value; `roomId` is read either from the context value (per ticket 02's deviation) or via `useParams` — whichever the file needs.
-- [ ] `import { PageContext } from '@/components/Providers/PageProvider'` is removed from this file.
-- [ ] `npm run lint` passes.
-- [ ] Manual smoke: visiting `/room/<id>#token=…` without a stored identity triggers the overlay with `JoinForm`; submitting a name dismisses the overlay and reveals the room contents.
+- [x] `src/components/Room/RoomGuard/RoomGuard.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
+- [x] The empty-context throw-guard message references `RoomMembershipProvider` (not `PageProvider`).
+- [x] `identity` is read from the new context value; `roomId` is read either from the context value (per ticket 02's deviation) or via `useParams` — whichever the file needs.
+- [x] `import { PageContext } from '@/components/Providers/PageProvider'` is removed from this file.
+- [x] `npm run lint` passes.
+- [x] Manual smoke: visiting `/room/<id>#token=…` without a stored identity triggers the overlay with `JoinForm`; submitting a name dismisses the overlay and reveals the room contents.

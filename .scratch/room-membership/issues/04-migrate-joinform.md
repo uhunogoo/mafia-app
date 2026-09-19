@@ -6,10 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] `src/components/Form/JoinForm/JoinForm.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
-- [ ] The submit handler calls `claim({ roomId, name: trimmed })` on the context value (NOT `createIdentity` and NOT `setIdentity`).
-- [ ] `import { createIdentity, roomHostClaimKey } from '@/lib/identity'` is removed from this file.
-- [ ] No direct `sessionStorage.getItem` calls remain in `JoinForm.tsx`.
-- [ ] The `if (!trimmed) { setError(...); return; }` guard is preserved before the `claim` call.
-- [ ] `npm run lint` passes.
-- [ ] Manual smoke: as a guest, submitting a name creates the identity; as a host in the same tab that created the room, submitting a name yields an identity whose `guestId` equals `user.sub`.
+- [x] `src/components/Form/JoinForm/JoinForm.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
+- [x] The submit handler calls `claim({ roomId, name: trimmed })` on the context value (NOT `createIdentity` and NOT `setIdentity`).
+- [x] `import { createIdentity, roomHostClaimKey } from '@/lib/identity'` is removed from this file.
+- [x] No direct `sessionStorage.getItem` calls remain in `JoinForm.tsx`.
+- [x] The `if (!trimmed) { setError(...); return; }` guard is preserved before the `claim` call.
+- [x] `npm run lint` passes.
+- [x] Manual smoke: as a guest, submitting a name creates the identity; as a host in the same tab that created the room, submitting a name yields an identity whose `guestId` equals `user.sub`.

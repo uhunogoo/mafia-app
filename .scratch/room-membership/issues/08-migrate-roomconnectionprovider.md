@@ -6,11 +6,11 @@
 
 **Status:** ready-for-agent
 
-- [ ] `src/components/Providers/RoomConnectionProvider/RoomConnectionProvider.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
-- [ ] The empty-context throw-guard message references `RoomMembershipProvider` (not `PageProvider`).
-- [ ] `roomId`, `token`, and `identity` are read from the new context value (per ticket 02's deviation, `roomId` is on the context value).
-- [ ] The `connect` callback signature (`client.joinById(roomId, { token, name, guestId })`) and the `ready = Boolean(token && identity?.guestId)` check are preserved.
-- [ ] The "Посилання недійсне: відсутній токен кімнати. Скористайся запрошенням хоста." error message is preserved verbatim.
-- [ ] `import { PageContext } from '@/components/Providers/PageProvider'` is removed from this file.
-- [ ] `npm run lint` passes.
-- [ ] Manual smoke: opening `/room/<id>#token=<t>` in a fresh tab establishes a Colyseus connection; opening the same URL with no token shows the invalid-invite error; opening the same URL in a second tab joins as a separate player.
+- [x] `src/components/Providers/RoomConnectionProvider/RoomConnectionProvider.tsx` imports `RoomMembershipContext` from `@/components/Providers/RoomMembershipProvider`.
+- [x] The empty-context throw-guard message references `RoomMembershipProvider` (not `PageProvider`).
+- [x] `roomId`, `token`, and `identity` are read from the new context value (per ticket 02's deviation, `roomId` is on the context value).
+- [x] The `connect` callback signature (`client.joinById(roomId, { token, name, guestId })`) and the `ready = Boolean(token && identity?.guestId)` check are preserved.
+- [x] The "Посилання недійсне: відсутній токен кімнати. Скористайся запрошенням хоста." error message is preserved verbatim.
+- [x] `import { PageContext } from '@/components/Providers/PageProvider'` is removed from this file.
+- [x] `npm run lint` passes.
+- [x] Manual smoke: opening `/room/<id>#token=<t>` in a fresh tab establishes a Colyseus connection; opening the same URL with no token shows the invalid-invite error; opening the same URL in a second tab joins as a separate player.

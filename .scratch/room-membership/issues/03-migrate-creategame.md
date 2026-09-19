@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] `src/components/CreateGame/CreateGame.tsx` imports `performSetToken`, `performSetHostClaim`, `createBrowserSources` from `@/lib/membership`.
-- [ ] Both pure functions are called after `client.create` resolves successfully, before `router.push`.
-- [ ] `import { roomHostClaimKey, roomTokenKey } from '@/lib/identity'` is removed from this file.
-- [ ] No direct `sessionStorage.setItem` calls remain in `CreateGame.tsx`.
-- [ ] `npm run lint` passes.
-- [ ] Manual smoke: create a room in the dashboard → tab navigates to `/room/<id>#token=<t>` → host claim is set in session → reloading the room page in the same tab still recognises the host.
+- [x] `src/components/CreateGame/CreateGame.tsx` imports `performSetToken`, `performSetHostClaim`, `createBrowserSources` from `@/lib/membership`.
+- [x] Both pure functions are called after `client.create` resolves successfully, before `router.push`.
+- [x] `import { roomHostClaimKey, roomTokenKey } from '@/lib/identity'` is removed from this file.
+- [x] No direct `sessionStorage.setItem` calls remain in `CreateGame.tsx`.
+- [x] `npm run lint` passes.
+- [x] Manual smoke: create a room in the dashboard → tab navigates to `/room/<id>#token=<t>` → host claim is set in session → reloading the room page in the same tab still recognises the host.
