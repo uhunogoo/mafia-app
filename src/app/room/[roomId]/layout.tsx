@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PageProvider from '@/components/Providers/PageProvider';
+import RoomMembershipProvider from '@/components/Providers/RoomMembershipProvider';
 
 export default function RoomLayout({
   children,
@@ -9,7 +10,9 @@ export default function RoomLayout({
 }>) {
   return (
     <PageProvider>
-      {children}
+      <RoomMembershipProvider>
+        {children}
+      </RoomMembershipProvider>
     </PageProvider>
   );
 }
