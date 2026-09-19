@@ -4,7 +4,7 @@ import React from 'react';
 import { createRoomContext } from '@colyseus/react';
 
 import { client } from '@/lib/colyseus/client';
-import { PageContext } from '@/components/Providers/PageProvider';
+import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import StatusMessage from '@/components/UI/StatusMessage';
 import RoomStatus from '@/components/Room/RoomStatus';
 
@@ -33,11 +33,13 @@ export const RoomContext = createRoomContext<MafiaStateView>();
 
 /** Підключає кімнату лише коли гравець має токен та identity (нікнейм). */
 function RoomConnectionProvider({ children }: { children?: React.ReactNode }) {
-  const page = React.useContext(PageContext);
-  if (!page) {
-    throw new Error('PageContext доступний лише всередині PageProvider');
+  const membership = React.useContext(RoomMembershipContext);
+  if (!membership) {
+    throw new Error(
+      'RoomMembershipContext доступний лише всередині RoomMembershipProvider',
+    );
   }
-  const { roomId, token, identity } = page;
+  const { roomId, token, identity } = membership;
 
   const connect = React.useCallback(() => {
     // Викликається лише коли ready; fallback-и ніколи не використовуються
