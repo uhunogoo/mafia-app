@@ -6,7 +6,7 @@ import { Shuffle } from 'lucide-react';
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
 import { roleComposition } from '@/lib/role-composition';
 import { cn } from '@/lib/utils';
-import { PageContext } from '@/components/Providers/PageProvider';
+import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
 import Button from '@/components/UI/Button';
 import Label from '@/components/UI/Label';
@@ -28,11 +28,13 @@ function RoomSidebar() {
   const { room } = RoomContext.useRoom();
   const players = RoomContext.useRoomState((s) => s.players);
   const maxPlayersState = RoomContext.useRoomState((s) => s.maxPlayers);
-  const page = React.useContext(PageContext);
-  if (!page) {
-    throw new Error('PageContext доступний лише всередині PageProvider');
+  const membership = React.useContext(RoomMembershipContext);
+  if (!membership) {
+    throw new Error(
+      'RoomMembershipContext доступний лише всередині RoomMembershipProvider',
+    );
   }
-  const { roomId, token, identity } = page;
+  const { roomId, token, identity } = membership;
 
   const maxPlayers = maxPlayersState ?? DEFAULT_MAX_PLAYERS;
   const count = players ? Object.keys(players).length : 0;
