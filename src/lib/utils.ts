@@ -20,3 +20,12 @@ export const range = (start: number, end?: number, step = 1): number[] => {
   }
   return output;
 };
+
+export function playersWord(n: number): string {
+  const mod100 = n % 100;
+  const mod10 = n % 10;
+  if (mod100 >= 11 && mod100 <= 14) return 'гравців';
+  if (mod10 === 1) return 'гравець';
+  if (mod10 >= 2 && mod10 <= 4) return 'гравці';
+  return 'гравців';
+}

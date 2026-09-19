@@ -4,25 +4,20 @@ import React from 'react';
 import { Shuffle } from 'lucide-react';
 
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
+
 import { roleComposition } from '@/lib/role-composition';
+import { playersWord } from '@/lib/utils';
+
 import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import { RoomContext } from '@/components/Providers/RoomConnectionProvider';
-import Button from '@/components/UI/Button';
-import Label from '@/components/UI/Label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
-import { ToggleGroup, ToggleGroupItem } from '@/components/UI/ToggleGroup';
 import InviteLink from '@/components/InviteLink';
 
-const PLAYER_OPTIONS = [10, 11, 12] as const;
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/UI/Card';
+import { ToggleGroup, ToggleGroupItem } from '@/components/UI/ToggleGroup';
+import Label from '@/components/UI/Label';
+import Button from '@/components/UI/Button';
 
-function playersWord(n: number): string {
-  const mod100 = n % 100;
-  const mod10 = n % 10;
-  if (mod100 >= 11 && mod100 <= 14) return 'гравців';
-  if (mod10 === 1) return 'гравець';
-  if (mod10 >= 2 && mod10 <= 4) return 'гравці';
-  return 'гравців';
-}
+const PLAYER_OPTIONS = [10, 11, 12] as const;
 
 function RoomSidebar() {
   const { room } = RoomContext.useRoom();
