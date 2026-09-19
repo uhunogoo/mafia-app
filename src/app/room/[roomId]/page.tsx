@@ -5,7 +5,7 @@ import RoomTopBar from '@/components/Room/RoomTopBar';
 import RulesCard from '@/components/Room/RulesCard';
 import RoomConnectionProvider from '@/components/Providers/RoomConnectionProvider';
 
-// roomId читається лише на клієнті (useParams у PageProvider) —
+// roomId читається лише на клієнті (useParams у RoomMembershipProvider) —
 // сторінка повністю статична, без доступу до params.
 export default function RoomPage() {
   return (
