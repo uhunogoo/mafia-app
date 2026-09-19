@@ -2,15 +2,17 @@
 
 import React from 'react';
 
-import { PageContext } from '@/components/Providers/PageProvider';
+import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import JoinForm from '@/components/Form/JoinForm';
 
 function RoomGuard({ children }: { children: React.ReactNode }) {
-  const page = React.useContext(PageContext);
-  if (!page) {
-    throw new Error('PageContext доступний лише всередині PageProvider');
+  const membership = React.useContext(RoomMembershipContext);
+  if (!membership) {
+    throw new Error(
+      'RoomMembershipContext доступний лише всередині RoomMembershipProvider',
+    );
   }
-  const { identity } = page;
+  const { identity } = membership;
 
   if (identity) {
     return <>{children}</>; // Просто пускаємо всередину
