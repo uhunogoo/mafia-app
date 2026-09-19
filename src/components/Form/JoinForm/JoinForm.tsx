@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-import { createIdentity, roomHostClaimKey } from '@/lib/identity';
-import { PageContext } from '@/components/Providers/PageProvider';
+import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import Button from '@/components/UI/Button';
 import {
   Card,
@@ -17,14 +16,16 @@ import Label from '@/components/UI/Label';
 import Title from '@/components/UI/Title';
 
 function JoinForm() {
-  const page = React.useContext(PageContext);
+  const membership = React.useContext(RoomMembershipContext);
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState('');
 
-  if (!page) {
-    throw new Error('PageContext доступний лише всередині PageProvider');
+  if (!membership) {
+    throw new Error(
+      'RoomMembershipContext доступний лише всередині RoomMembershipProvider',
+    );
   }
-  const { roomId, identity, setIdentity } = page;
+  const { roomId, identity, claim } = membership;
 
   if (identity) return null;
 
@@ -35,10 +36,7 @@ function JoinForm() {
       setError('Уведіть нікнейм.');
       return;
     }
-    // Хост кімнати приєднується тим самим guestId, з яким створив кімнату
-    // (claim живе у sessionStorage вкладки, де кімнату створили)
-    const hostClaim = sessionStorage.getItem(roomHostClaimKey(roomId));
-    setIdentity(createIdentity(roomId, trimmed, hostClaim ?? undefined));
+    claim({ roomId, name: trimmed });
   }
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
