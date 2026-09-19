@@ -9,6 +9,7 @@ here.
 - Dev server: `npm run dev`.
 - Production build: `npm run build`.
 - Lint: `npm run lint`.
+- Tests (pure-logic modules, mocha): `npm test`.
 
 ## Game server (`../mafia-server`)
 

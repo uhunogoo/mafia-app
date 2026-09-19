@@ -1,0 +1,10 @@
+refactor(membership): migrate CreateGame to pure membership functions
+
+CreateGame now writes the invite token and host claim through the
+membership module's pure functions (performSetToken / performSetHostClaim)
+with a fresh createBrowserSources() instance, instead of reaching into
+sessionStorage directly. CreateGame lives on the dashboard route where
+RoomMembershipProvider is not mounted, so direct calls to the pure
+functions (not the context actions) preserve the Sources seam.
+
+Ticket 03 of the room-membership migration.

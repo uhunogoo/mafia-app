@@ -34,3 +34,17 @@ Full version, with rationale: [docs/boundaries.md](./docs/boundaries.md).
 - [docs/code-style.md](./docs/code-style.md) — Joy of React conventions.
 - [docs/boundaries.md](./docs/boundaries.md) — always / ask first / never.
 - [docs/testing.md](./docs/testing.md) — mocha + UI text language.
+
+## Agent skills
+
+### Issue tracker
+
+Local markdown under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout: one root `CONTEXT.md` plus `docs/adr/`. See `docs/agents/domain.md`.
