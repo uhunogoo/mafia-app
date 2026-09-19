@@ -6,7 +6,11 @@ import type { JwtPayload } from '@supabase/auth-js';
 
 import { client } from '@/lib/colyseus/client';
 import { generateToken } from '@/lib/generateToken';
-import { roomHostClaimKey, roomTokenKey } from '@/lib/identity';
+import {
+  createBrowserSources,
+  performSetHostClaim,
+  performSetToken,
+} from '@/lib/membership';
 import Button from '@/components/UI/Button';
 
 interface CreateGameProps {
@@ -27,9 +31,13 @@ function CreateGame({ user }: CreateGameProps) {
       // Сервер очікує guestId творця кімнати — саме він стає хостом (state.hostId).
       // sessionStorage: claim діє лише у вкладці, де кімнату створили,
       // щоб гість з іншої вкладки не перехопив host-ідентичність.
+      // Цей компонент живе на dashboard-роуті, де RoomMembershipProvider
+      // не змонтований, тому пишемо через чисті функції модуля membership
+      // (seam: Sources), а не через контекст.
       const room = await client.create('mafia_room', { token, guestId: user.sub });
-      sessionStorage.setItem(roomTokenKey(room.roomId), token);
-      sessionStorage.setItem(roomHostClaimKey(room.roomId), user.sub);
+      const sources = createBrowserSources();
+      performSetToken({ roomId: room.roomId, token }, sources);
+      performSetHostClaim({ roomId: room.roomId, guestId: user.sub }, sources);
       router.push(`/room/${room.roomId}#token=${token}`);
     } catch (err: unknown) {
       console.error('Failed to create room:', err);
