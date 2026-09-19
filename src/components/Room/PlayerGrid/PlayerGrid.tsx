@@ -5,11 +5,11 @@ import { UserRound } from 'lucide-react';
 
 import { DEFAULT_MAX_PLAYERS } from '@/constants';
 import { range } from '@/lib/utils';
+import { RoomMembershipContext } from '@/components/Providers/RoomMembershipProvider';
 import {
   RoomContext,
   type RoomPlayerView,
 } from '@/components/Providers/RoomConnectionProvider';
-import { PageContext } from '@/components/Providers/PageProvider';
 import PlayerSlot from '@/components/Room/PlayerSlot';
 
 function EmptySlot() {
@@ -42,11 +42,13 @@ function findSeatedPlayer(
 function PlayerGrid() {
   const players = RoomContext.useRoomState((s) => s.players);
   const maxPlayers = RoomContext.useRoomState((s) => s.maxPlayers);
-  const page = React.useContext(PageContext);
-  if (!page) {
-    throw new Error('PageContext доступний лише всередині PageProvider');
+  const membership = React.useContext(RoomMembershipContext);
+  if (!membership) {
+    throw new Error(
+      'RoomMembershipContext доступний лише всередині RoomMembershipProvider',
+    );
   }
-  const { identity } = page;
+  const { identity } = membership;
 
   const capacity = Math.max(1, maxPlayers ?? DEFAULT_MAX_PLAYERS);
   const myGuestId = identity?.guestId;
