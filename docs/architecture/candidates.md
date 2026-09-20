@@ -40,7 +40,7 @@ shared mental model; `PageContext` exposes the union but no module owns it.
 
 **Solution.** One `RoomMembership` module: a provider that rehydrates on
 mount and on `roomId` change, an imperative `claim()` action exposed on the
-context value, a separate `setHostClaim(roomId, guestId)` action for the
+context value, a separate `setHostClaim(roomId, password)` action for the
 host-claim write, and a single storage adapter behind a seam. Consumers
 read context directly (no wrapper hooks, per [architecture.md](../architecture.md)).
 The host-claim invariant lives in one function (`setHostClaim`); the
@@ -72,7 +72,7 @@ export interface ClaimInput {
 
 export interface SetHostClaimInput {
   roomId: string;
-  guestId: string;
+  password: string;
 }
 
 export interface Membership {
@@ -85,8 +85,8 @@ export interface Membership {
 // pure functions (lib/membership/)
 export function resolveMembership(roomId: string, sources: Sources): Membership;
 export function performClaim(input: ClaimInput, sources: Sources): Membership;
-//   → reads hostClaim from sources; if present, uses it as preset guestId.
-//     Otherwise generates a fresh guestId.
+//   → reads hostClaim from sources; if present, uses it as preset password.
+//     Otherwise generates a fresh password.
 export function performSetHostClaim(input: SetHostClaimInput, sources: Sources): Membership;
 
 // context value (Providers/RoomMembershipProvider/)
@@ -120,11 +120,11 @@ changes, so a remount is not free.
 3. Update `app/room/[roomId]/layout.tsx` to mount the new provider.
 4. Update 5 consumers (`JoinForm`, `PlayerGrid`, `RoomSidebar`, `RoomGuard`,
    `RoomConnectionProvider`) to import the new context.
-5. Update `CreateGame` to call `setHostClaim({ roomId, guestId: user.sub })`
+5. Update `CreateGame` to call `setHostClaim({ roomId, password: user.sub })`
    after `client.create` succeeds (host still goes through `JoinForm` like
    everyone else — no `asHost` flag on `claim`).
 6. Update `JoinForm` to call `claim({ roomId, name })`; the module reads
-   `hostClaim` internally and uses it as preset guestId when present.
+   `hostClaim` internally and uses it as preset password when present.
 7. Delete `PageProvider/` and `lib/identity.ts`.
 
 **Open (Round 2) — settled.**
@@ -135,7 +135,7 @@ source to source — `JoinForm` collects it.)*
 
 - ~~**N2 — host display name source**~~ (cancelled). Host enters their
   display name in `JoinForm` like any guest. `claim()` reads `hostClaim`
-  internally and uses it as the preset guestId; the display name is whatever
+  internally and uses it as the preset password; the display name is whatever
   the host typed.
 ---
 
@@ -277,7 +277,7 @@ contracts.
   `resolveMembership()` / `performClaim()` for non-React callers (tests).
 - **Q2 (claim semantics):** A (revised 2026-09-18). `claim(roomId, name)` is
   the one identity-writing function, with no flags. A separate
-  `setHostClaim(roomId, guestId)` action owns the host-claim write.
+  `setHostClaim(roomId, password)` action owns the host-claim write.
   `CreateGame` calls `setHostClaim` after `client.create`; the host still
   goes through `JoinForm` like any other player.
 - **Q3 (token lifecycle):** A — owned by the membership module, mounted at

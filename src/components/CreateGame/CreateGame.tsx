@@ -28,16 +28,16 @@ function CreateGame({ user }: CreateGameProps) {
 
     try {
       const token = generateToken();
-      // Сервер очікує guestId творця кімнати — саме він стає хостом (state.hostId).
+      // Сервер очікує password творця кімнати — саме він стає хостом (state.hostId).
       // sessionStorage: claim діє лише у вкладці, де кімнату створили,
       // щоб гість з іншої вкладки не перехопив host-ідентичність.
       // Цей компонент живе на dashboard-роуті, де RoomMembershipProvider
       // не змонтований, тому пишемо через чисті функції модуля membership
       // (seam: Sources), а не через контекст.
-      const room = await client.create('mafia_room', { token, guestId: user.sub });
+      const room = await client.create('mafia_room', { token, password: user.sub, name: user.name || "host", });
       const sources = createBrowserSources();
       performSetToken({ roomId: room.roomId, token }, sources);
-      performSetHostClaim({ roomId: room.roomId, guestId: user.sub }, sources);
+      performSetHostClaim({ roomId: room.roomId, password: user.sub }, sources);
       router.push(`/room/${room.roomId}#token=${token}`);
     } catch (err: unknown) {
       console.error('Failed to create room:', err);

@@ -50,7 +50,7 @@ export function resolveMembership(roomId: string, sources: Sources): Membership 
 
 /**
  * Writes identity to localStorage. Reads the current `hostClaim` from the
- * same {@link Sources} instance and uses it as the preset `guestId` when
+ * same {@link Sources} instance and uses it as the preset `password` when
  * present; otherwise generates a fresh one. If `input.name.trim()` is `''`,
  * returns the current membership unchanged and performs no writes.
  */
@@ -60,8 +60,8 @@ export function performClaim(input: ClaimInput, sources: Sources): Membership {
   if (trimmed === '') {
     return current;
   }
-  const guestId = current.hostClaim ?? generateToken();
-  const identity = { name: trimmed, guestId };
+  const password = current.hostClaim ?? generateToken();
+  const identity = { name: trimmed, password };
   sources.writeLocal(playerKey(input.roomId), JSON.stringify(identity));
   return {
     ...current,
@@ -79,11 +79,11 @@ export function performSetHostClaim(
   input: SetHostClaimInput,
   sources: Sources,
 ): Membership {
-  sources.writeSession(roomHostClaimKey(input.roomId), input.guestId);
+  sources.writeSession(roomHostClaimKey(input.roomId), input.password);
   const current = resolveMembership(input.roomId, sources);
   return {
     ...current,
-    hostClaim: input.guestId,
+    hostClaim: input.password,
     sources: { ...current.sources, hostClaim: 'session' },
   };
 }

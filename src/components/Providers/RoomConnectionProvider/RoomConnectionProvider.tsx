@@ -10,7 +10,7 @@ import RoomStatus from '@/components/Room/RoomStatus';
 
 /**
  * Клиентське уявлення про MafiaState (mafia-server/src/rooms/schema/MafiaState.ts).
- * MapSchema трансформується у Snapshot у Record за ключем guestId.
+ * MapSchema трансформується у Snapshot у Record за ключем password.
  */
 export interface RoomPlayerView {
   sessionId: string;
@@ -46,11 +46,11 @@ function RoomConnectionProvider({ children }: { children?: React.ReactNode }) {
     return client.joinById(roomId, {
       token: token ?? '',
       name: identity?.name ?? '',
-      guestId: identity?.guestId ?? '',
+      password: identity?.password ?? '',
     });
   }, [roomId, token, identity]);
 
-  const ready = Boolean(token && identity?.guestId);
+  const ready = Boolean(token && identity?.password);
 
   if (!token) {
     return (
@@ -63,7 +63,7 @@ function RoomConnectionProvider({ children }: { children?: React.ReactNode }) {
   return (
     <RoomContext.RoomProvider
       connect={ready ? connect : null}
-      deps={[roomId, token, identity?.name, identity?.guestId]}
+      deps={[roomId, token, identity?.name, identity?.password]}
     >
       <RoomStatus />
       {children}

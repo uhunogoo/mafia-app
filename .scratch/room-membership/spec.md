@@ -4,18 +4,18 @@ Status: ready-for-agent
 
 ## Problem Statement
 
-A player attaching to a Mafia game room — host or guest — needs three things to land in the same place: an **identity** (display name + stable `guestId`), a **token** (the invite-link secret proving the link is valid), and, for the host only, a **hostClaim** (a per-tab pin proving the tab that created the room is the one that should connect as the host). Today those three are scattered across five files, two storage backends (`localStorage` and `sessionStorage`), and the URL hash. The host-claim impersonation invariant — "the host's `guestId` must match the `hostId` on the server" — is duplicated in `CreateGame` and `JoinForm`, and there is no single module that owns the rule "this player is attached to this room." Any change to identity, invite, or host rules today means editing a half-dozen files and re-deriving the invariant by hand.
+A player attaching to a Mafia game room — host or guest — needs three things to land in the same place: an **identity** (display name + stable `password`), a **token** (the invite-link secret proving the link is valid), and, for the host only, a **hostClaim** (a per-tab pin proving the tab that created the room is the one that should connect as the host). Today those three are scattered across five files, two storage backends (`localStorage` and `sessionStorage`), and the URL hash. The host-claim impersonation invariant — "the host's `password` must match the `hostId` on the server" — is duplicated in `CreateGame` and `JoinForm`, and there is no single module that owns the rule "this player is attached to this room." Any change to identity, invite, or host rules today means editing a half-dozen files and re-deriving the invariant by hand.
 
 ## Solution
 
-Collapse the room-membership concept into one module: **`RoomMembership`**. The module owns the three pieces of state (identity, token, hostClaim), the storage keys for each, the rules that decide which sources take precedence, and the pure functions that write each one. A single provider mounts at the room-route layout, rehydrates from storage on mount and on `roomId` change, and exposes the state plus two imperative actions (`claim`, `setHostClaim`) through context. Consumers read state via `React.useContext(RoomMembershipContext)` and call actions the same way; no component reaches into storage directly. The host still goes through the same `JoinForm` as a guest — the only difference is that `CreateGame` first calls the pure `performSetToken` and `performSetHostClaim` so the form has the invite token and knows which `guestId` to use. Because `CreateGame` lives on the dashboard route, where the provider is not mounted, it calls the pure function directly (with a freshly-built `Sources` instance), not the context actions: `performSetToken({ roomId, token }, sources)` and `performSetHostClaim({ roomId, guestId: user.sub }, sources)`.
+Collapse the room-membership concept into one module: **`RoomMembership`**. The module owns the three pieces of state (identity, token, hostClaim), the storage keys for each, the rules that decide which sources take precedence, and the pure functions that write each one. A single provider mounts at the room-route layout, rehydrates from storage on mount and on `roomId` change, and exposes the state plus two imperative actions (`claim`, `setHostClaim`) through context. Consumers read state via `React.useContext(RoomMembershipContext)` and call actions the same way; no component reaches into storage directly. The host still goes through the same `JoinForm` as a guest — the only difference is that `CreateGame` first calls the pure `performSetToken` and `performSetHostClaim` so the form has the invite token and knows which `password` to use. Because `CreateGame` lives on the dashboard route, where the provider is not mounted, it calls the pure function directly (with a freshly-built `Sources` instance), not the context actions: `performSetToken({ roomId, token }, sources)` and `performSetHostClaim({ roomId, password: user.sub }, sources)`.
 
 ## User Stories
 
 1. As a guest player, I want to click an invite link and join a room, so that I can play with friends.
 2. As a host player, I want to create a room and share an invite link, so that friends can join my game.
 3. As a guest, I want my name to be remembered after I refresh, so that I don't have to re-enter it.
-4. As a host, I want my identity on the room page to use the same `guestId` I created the room with, so that the server recognises me as the host.
+4. As a host, I want my identity on the room page to use the same `password` I created the room with, so that the server recognises me as the host.
 5. As a returning player, I want the system to remember me if I refresh or briefly disconnect from the room, so that the host doesn't see me as a new player.
 6. As a player who navigates between two rooms, I want my identity, token, and host-claim to reset for the new room, so that secrets from one room don't leak into another.
 7. As a guest joining with a malformed invite link, I want to see a clear "invalid invite" message, so that I know to ask the host for a new link.
@@ -35,7 +35,7 @@ Collapse the room-membership concept into one module: **`RoomMembership`**. The 
   - `Sources` interface (storage adapter)
   - `ClaimInput`, `SetHostClaimInput`, `SetTokenInput`, `Membership` types
   - `resolveMembership(roomId, sources)` — read-only, used by the provider on mount and on `roomId` change
-  - `performClaim(input, sources)` — writes identity; reads `hostClaim` from `sources` and uses it as preset `guestId` when present, otherwise generates a fresh one
+  - `performClaim(input, sources)` — writes identity; reads `hostClaim` from `sources` and uses it as preset `password` when present, otherwise generates a fresh one
   - `performSetHostClaim(input, sources)` — writes `hostClaim` only
   - `performSetToken(input, sources)` — writes `token` only (parallel to `performSetHostClaim`; used by `CreateGame` on the dashboard, where the provider is not mounted)
   - A `createBrowserSources()` factory that adapts `window.localStorage`, `window.sessionStorage`, and `window.location.hash`
@@ -44,8 +44,8 @@ Collapse the room-membership concept into one module: **`RoomMembership`**. The 
 - **DELETED `src/lib/identity.ts`** — all logic migrated to `lib/membership`.
 - **DELETED `src/components/Providers/PageProvider/`** — replaced by `RoomMembershipProvider`.
 - **MODIFIED `src/app/room/[roomId]/layout.tsx`** — mounts `RoomMembershipProvider` instead of `PageProvider`. Room-scoped, not app-scoped.
-- **MODIFIED `src/components/CreateGame/CreateGame.tsx`** — calls the pure functions `performSetToken({ roomId, token }, sources)` and `performSetHostClaim({ roomId, guestId: user.sub }, sources)` after `client.create` succeeds. These are **direct calls to the pure functions**, not calls through the context, because the provider is not mounted on the dashboard route. `sources` is a fresh `createBrowserSources()`.
-- **MODIFIED `src/components/Form/JoinForm/JoinForm.tsx`** — calls `claim({ roomId, name })` on the context value; the underlying `performClaim` reads `hostClaim` internally and uses it as preset `guestId` when present.
+- **MODIFIED `src/components/CreateGame/CreateGame.tsx`** — calls the pure functions `performSetToken({ roomId, token }, sources)` and `performSetHostClaim({ roomId, password: user.sub }, sources)` after `client.create` succeeds. These are **direct calls to the pure functions**, not calls through the context, because the provider is not mounted on the dashboard route. `sources` is a fresh `createBrowserSources()`.
+- **MODIFIED `src/components/Form/JoinForm/JoinForm.tsx`** — calls `claim({ roomId, name })` on the context value; the underlying `performClaim` reads `hostClaim` internally and uses it as preset `password` when present.
 - **MODIFIED `src/components/Room/RoomGuard/RoomGuard.tsx`** — imports `RoomMembershipContext` instead of `PageContext`.
 - **MODIFIED `src/components/Room/RoomSidebar/RoomSidebar.tsx`** — same.
 - **MODIFIED `src/components/Room/PlayerGrid/PlayerGrid.tsx`** — same.
@@ -86,7 +86,7 @@ export interface Membership {
 }
 
 export interface ClaimInput       { roomId: string; name: string }
-export interface SetHostClaimInput { roomId: string; guestId: string }
+export interface SetHostClaimInput { roomId: string; password: string }
 export interface SetTokenInput     { roomId: string; token: string }
 
 export function resolveMembership(roomId: string, sources: Sources): Membership;
@@ -124,7 +124,7 @@ Existing storage key shapes (`player:<roomId>` in `localStorage`; `room_<roomId>
 
 - The test runner itself (mocha dev-dep + config) is part of the implementation but isn't specced here.
 - A `clear()` context action and any "leave room" / "forget me" UI. Not in v1; if a future spec needs it, the `Sources` interface can grow `removeLocal` / `removeSession` then.
-- **Host-status derivation.** Whether `RoomSidebar` decides "this player is the host" by checking `hostClaim !== null` (local tab pin) or by comparing `identity.guestId` to `room.state.hostId` (server-authoritative) is **explicitly out of scope for A1**. A1 only exposes the raw `hostClaim` and `identity`; the comparison stays where it is today (`RoomSidebar` reads `players[identity.guestId].isHost` from Colyseus state). Reopening this question belongs to A2 (split lobby commands).
+- **Host-status derivation.** Whether `RoomSidebar` decides "this player is the host" by checking `hostClaim !== null` (local tab pin) or by comparing `identity.password` to `room.state.hostId` (server-authoritative) is **explicitly out of scope for A1**. A1 only exposes the raw `hostClaim` and `identity`; the comparison stays where it is today (`RoomSidebar` reads `players[identity.password].isHost` from Colyseus state). Reopening this question belongs to A2 (split lobby commands).
 - Any change to A2 (lobby commands) or A3 (shared contracts). Those are separate specs blocked on A1.
 - Any change to `SignUpForm`, `CreateGame`'s dashboard copy, or the email-derived-name pattern that the rejected options would have required.
 - Moving `PlayerIdentity` to a shared `@mafia-game/contracts` package (deferred to A3).

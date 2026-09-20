@@ -35,8 +35,8 @@ function RoomSidebar() {
   const count = players ? Object.keys(players).length : 0;
   const missing = Math.max(0, maxPlayers - count);
 
-  // Хост — це гравець, чиїй guestId збігається з нашим identity
-  const me = identity?.guestId ? players?.[identity.guestId] : undefined;
+  // Хост — це гравець, чиїй password збігається з нашим identity
+  const me = identity?.password ? players?.[identity.password] : undefined;
   const isHost = me?.isHost ?? false;
   const isFull = missing === 0;
 

@@ -12,4 +12,4 @@
 - [x] No direct `sessionStorage.getItem` calls remain in `JoinForm.tsx`.
 - [x] The `if (!trimmed) { setError(...); return; }` guard is preserved before the `claim` call.
 - [x] `npm run lint` passes.
-- [x] Manual smoke: as a guest, submitting a name creates the identity; as a host in the same tab that created the room, submitting a name yields an identity whose `guestId` equals `user.sub`.
+- [x] Manual smoke: as a guest, submitting a name creates the identity; as a host in the same tab that created the room, submitting a name yields an identity whose `password` equals `user.sub`.

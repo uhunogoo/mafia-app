@@ -12,8 +12,8 @@
 - [x] Storage key shapes match the spec: `player:<roomId>` (local), `room_<roomId>_token` (session), `room_<roomId>_hostClaim` (session), `token` (hash).
 - [x] `resolveMembership` returns a `Membership` whose `sources` field reflects whether each piece came from `'hash'`, `'session'`, `'storage'`, or `null`.
 - [x] `performClaim` returns the current `Membership` unchanged when `input.name.trim()` is `''` (no write to `Sources`).
-- [x] `performClaim` with a non-empty name and no `hostClaim` writes an identity with a freshly generated `guestId`.
-- [x] `performClaim` with a non-empty name and a present `hostClaim` writes an identity using that `hostClaim` as the `guestId`.
+- [x] `performClaim` with a non-empty name and no `hostClaim` writes an identity with a freshly generated `password`.
+- [x] `performClaim` with a non-empty name and a present `hostClaim` writes an identity using that `hostClaim` as the `password`.
 - [x] `performSetHostClaim` writes `hostClaim` to session storage and returns the updated `Membership`.
 - [x] `performSetToken` writes `token` to session storage and returns the updated `Membership`.
 - [x] `package.json` declares `mocha`, `tsx`, and `@types/mocha` as devDependencies (versions matched to the mafia-server package for consistency: `mocha ^11.7.5`, `tsx`, `@types/mocha ^10.0.1`).

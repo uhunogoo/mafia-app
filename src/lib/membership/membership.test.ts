@@ -53,12 +53,12 @@ describe('membership.resolveMembership', () => {
   it('reads identity from localStorage', () => {
     sources.writeLocal(
       playerKey(ROOM),
-      JSON.stringify({ name: 'Alice', guestId: 'g1' }),
+      JSON.stringify({ name: 'Alice', password: 'g1' }),
     );
 
     const m = resolveMembership(ROOM, sources);
 
-    assert.deepStrictEqual(m.identity, { name: 'Alice', guestId: 'g1' });
+    assert.deepStrictEqual(m.identity, { name: 'Alice', password: 'g1' });
     assert.strictEqual(m.sources.identity, 'storage');
   });
 
@@ -91,7 +91,7 @@ describe('membership.performClaim', () => {
   it('returns current membership unchanged when name is empty', () => {
     sources.writeLocal(
       playerKey(ROOM),
-      JSON.stringify({ name: 'Alice', guestId: 'g1' }),
+      JSON.stringify({ name: 'Alice', password: 'g1' }),
     );
     sources.writeSession(roomHostClaimKey(ROOM), 'h1');
     sources.writeSession(roomTokenKey(ROOM), 'tok');
@@ -107,12 +107,12 @@ describe('membership.performClaim', () => {
     assert.strictEqual(sources.records.writes.length, 0, 'no writes performed');
   });
 
-  it('writes a fresh guestId to localStorage when no hostClaim is present', () => {
+  it('writes a fresh password to localStorage when no hostClaim is present', () => {
     const m = performClaim({ roomId: ROOM, name: 'Alice' }, sources);
 
     assert.ok(m.identity, 'identity is set');
     assert.strictEqual(m.identity?.name, 'Alice');
-    assert.ok(m.identity?.guestId && m.identity.guestId.length > 0, 'fresh guestId');
+    assert.ok(m.identity?.password && m.identity.password.length > 0, 'fresh password');
     assert.strictEqual(m.sources.identity, 'storage');
 
     assert.strictEqual(sources.records.writes.length, 1);
@@ -121,16 +121,16 @@ describe('membership.performClaim', () => {
     assert.strictEqual(write.key, playerKey(ROOM));
     assert.deepStrictEqual(
       JSON.parse(write.value),
-      { name: 'Alice', guestId: m.identity?.guestId },
+      { name: 'Alice', password: m.identity?.password },
     );
   });
 
-  it('uses the hostClaim as guestId when hostClaim is present', () => {
+  it('uses the hostClaim as password when hostClaim is present', () => {
     sources.writeSession(roomHostClaimKey(ROOM), 'host-1');
 
     const m = performClaim({ roomId: ROOM, name: 'Alice' }, sources);
 
-    assert.deepStrictEqual(m.identity, { name: 'Alice', guestId: 'host-1' });
+    assert.deepStrictEqual(m.identity, { name: 'Alice', password: 'host-1' });
     assert.strictEqual(m.sources.identity, 'storage');
   });
 
@@ -155,7 +155,7 @@ describe('membership.performSetHostClaim', () => {
   });
 
   it('writes hostClaim to sessionStorage and returns updated membership', () => {
-    const m = performSetHostClaim({ roomId: ROOM, guestId: 'host-1' }, sources);
+    const m = performSetHostClaim({ roomId: ROOM, password: 'host-1' }, sources);
 
     assert.strictEqual(m.hostClaim, 'host-1');
     assert.strictEqual(m.sources.hostClaim, 'session');

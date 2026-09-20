@@ -29,11 +29,11 @@ interface SeatedPlayer {
 function findSeatedPlayer(
   players: Record<string, RoomPlayerView> | undefined,
   seatIndex: number,
-  myGuestId: string | undefined,
+  mypassword: string | undefined,
 ): SeatedPlayer | undefined {
-  for (const [guestId, player] of Object.entries(players ?? {})) {
+  for (const [password, player] of Object.entries(players ?? {})) {
     if (player.seatIndex === seatIndex) {
-      return { player, isYou: guestId === myGuestId };
+      return { player, isYou: password === mypassword };
     }
   }
   return undefined;
@@ -51,12 +51,12 @@ function PlayerGrid() {
   const { identity } = membership;
 
   const capacity = Math.max(1, maxPlayers ?? DEFAULT_MAX_PLAYERS);
-  const myGuestId = identity?.guestId;
+  const mypassword = identity?.password;
 
   return (
     <section className="grid w-full grid-cols-4 gap-2 rounded-xl border bg-background p-3 sm:gap-3 sm:p-4">
       {range(capacity).map((seatIndex) => {
-        const seated = findSeatedPlayer(players, seatIndex, myGuestId);
+        const seated = findSeatedPlayer(players, seatIndex, mypassword);
         return seated ? (
           <PlayerSlot
             key={seatIndex}

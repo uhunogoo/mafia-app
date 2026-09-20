@@ -69,7 +69,7 @@
                   JF[JoinForm] -->|reads hostClaim| SS
                   JF -->|createIdentity writes| LS
                   RCP[RoomConnectionProvider] -->|reads token+identity| PP
-                  RCP -->|joinById token/guestId| COLYSEUS[(Colyseus)]
+                  RCP -->|joinById token/password| COLYSEUS[(Colyseus)]
                   JF -. "hostClaim invariant lives here AND in CreateGame" .- CG
                   classDef box fill:#f1f5f9,stroke:#475569,stroke-width:1.5px;
                   classDef leak stroke:#dc2626,stroke-width:2px,stroke-dasharray:4 4;

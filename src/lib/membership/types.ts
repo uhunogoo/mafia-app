@@ -1,6 +1,6 @@
 export interface PlayerIdentity {
   name: string;
-  guestId: string;
+  password: string;
 }
 
 /**
@@ -39,7 +39,7 @@ export interface ClaimInput {
 
 export interface SetHostClaimInput {
   roomId: string;
-  guestId: string;
+  password: string;
 }
 
 export interface SetTokenInput {
